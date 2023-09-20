@@ -1,21 +1,23 @@
 import * as React from 'react'
 
 export type IconProps = {
-  /** Set width and height of icon in pixels */
-  /** Props to pass directly to svg element */
+  size?: number
   svgProps?: React.SVGProps<SVGSVGElement>
 } & Omit<React.HTMLProps<HTMLSpanElement>, 'color' | 'size'>
 
 export const IconWrapper: React.FC<{ icon: React.ReactNode } & IconProps> = ({
   icon,
+  size: sizeProp,
   ...restProps
 }) => {
+  const size = sizeProp ? `${sizeProp}px` : '20px'
+
   return (
     <span
       role="img"
       style={{
-        width: '20px',
-        height: '20px',
+        width: size,
+        height: size,
         display: 'inline-flex',
         fontSize: 'inherit',
       }}
