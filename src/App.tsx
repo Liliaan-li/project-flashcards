@@ -1,5 +1,6 @@
 import className from './components/ui/typography/typography.module.scss'
 
+// eslint-disable-next-line import/no-unresolved
 import { Typography } from '@/components/ui/typography/typography'
 
 export function App() {
