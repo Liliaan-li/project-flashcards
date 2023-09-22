@@ -6,6 +6,7 @@ export default {
   title: 'Components/Typography',
   component: Typography.H1,
   style: { backgroundColor: 'white' },
+  tags: ['autodocs'],
 } as Meta<typeof Typography.H1>
 
 export const AllTypography = {
@@ -26,8 +27,8 @@ export const AllTypography = {
   ),
 }
 
-export const H1WithSpanComponent = {
-  render: () => <Typography.H1 component={'a'}>Span tag</Typography.H1>,
+export const Body1 = {
+  render: () => <Typography.Body1>Body1</Typography.Body1>,
 }
 export const H1WithMargin = {
   render: () => (
