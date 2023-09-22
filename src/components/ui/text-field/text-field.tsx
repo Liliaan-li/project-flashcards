@@ -14,7 +14,7 @@ export type TextFieldProps = {
   value?: string
   label?: ReactNode
   errorMessage?: string
-  iconEnd?: ReactNode
+  iconEnd?: boolean
   iconSearch?: boolean
   onEnter?: (e: KeyboardEvent<HTMLInputElement>) => void
   disabled?: boolean
