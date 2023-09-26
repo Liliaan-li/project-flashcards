@@ -1,4 +1,4 @@
-import { IconProps, IconWrapper } from '@/icons/IconWrapper.tsx'
+import { IconProps, IconWrapper } from '@/assets/icons/IconWrapper'
 
 export const Search = (allProps: IconProps) => {
   const { svgProps: props, ...restProps } = allProps
