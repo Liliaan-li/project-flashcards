@@ -1,4 +1,4 @@
-import { IconWrapper, IconProps } from '../IconWrapper'
+import { IconWrapper, IconProps } from '../../IconWrapper.tsx'
 
 const Check = (allProps: IconProps) => {
   const { svgProps: props, ...restProps } = allProps

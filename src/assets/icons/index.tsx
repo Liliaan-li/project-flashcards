@@ -1,1 +1,1 @@
-export { default as Check } from './components/Check'
+export { default as Check } from './components/check/Check.tsx'

@@ -4,11 +4,11 @@ import { clsx } from 'clsx'
 
 import s from './text-field.module.scss'
 
+import { Close } from '@/assets/icons/components/close/close-icon.tsx'
+import { EyeClosed } from '@/assets/icons/components/eye/eye-closed-icon.tsx'
+import { Eye } from '@/assets/icons/components/eye/eye-icon.tsx'
+import { Search } from '@/assets/icons/components/search/search-icon.tsx'
 import { Typography } from '@/components/ui/typography/typography.tsx'
-import { Close } from '@/icons/close/close-icon.tsx'
-import { EyeClosed } from '@/icons/eye/eye-closed-icon.tsx'
-import { Eye } from '@/icons/eye/eye-icon.tsx'
-import { Search } from '@/icons/search/search-icon.tsx'
 
 export type TextFieldProps = {
   value?: string

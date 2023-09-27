@@ -1,4 +1,4 @@
-import { IconProps, IconWrapper } from '@/assets/icons/IconWrapper'
+import { IconProps, IconWrapper } from '@/assets/icons/IconWrapper.tsx'
 
 export const Close = (allProps: IconProps) => {
   const { svgProps: props, ...restProps } = allProps

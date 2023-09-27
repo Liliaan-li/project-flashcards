@@ -37,7 +37,7 @@
     border-color: var(--color-dark-100);
   }
 
-  &[data-state="checked"]:disabled {
+  &[data-state='checked']:disabled {
     background-color: var(--color-checkbox-disabled);
   }
 }
@@ -60,7 +60,7 @@
 
   &:focus-within,
   &:hover:not(.disabled),
-  &:hover .root:not([data-state="checked"]) {
+  &:hover .root:not([data-state='checked']) {
     background-color: var(--color-dark-500);
   }
 
