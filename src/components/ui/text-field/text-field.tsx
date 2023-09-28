@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef, ReactNode, KeyboardEvent, useState } from 'react'
+import { ComponentPropsWithoutRef, forwardRef, ReactNode, useState, ChangeEvent } from 'react'
 
 import { clsx } from 'clsx'
 
@@ -11,29 +11,30 @@ import { Eye } from '@/icons/eye/eye-icon.tsx'
 import { Search } from '@/icons/search/search-icon.tsx'
 
 export type TextFieldProps = {
-  value?: string
+  value: string
   label?: ReactNode
   errorMessage?: string
   iconEnd?: boolean
   iconSearch?: boolean
-  onEnter?: (e: KeyboardEvent<HTMLInputElement>) => void
+  onChangeValue?: (value: string) => void
   disabled?: boolean
   onClearClick?: () => void
-} & ComponentProps<'input'>
+} & ComponentPropsWithoutRef<'input'>
 
 // НЕ УДАЛЯТЬ КОММЕНТ ПЕРЕД forwardRef - без него ломается tree shaking
 export const TextField = /* @__PURE__ */ forwardRef<HTMLInputElement, TextFieldProps>(
   (
     {
       label,
-      onEnter,
-      onKeyDown,
+      onChangeValue,
+      onChange,
       className,
       errorMessage,
       iconEnd,
       iconSearch,
       onClearClick,
       disabled,
+      value,
       ...rest
     },
     ref
@@ -43,11 +44,9 @@ export const TextField = /* @__PURE__ */ forwardRef<HTMLInputElement, TextFieldP
 
     const showError = !!errorMessage && errorMessage.length > 0
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-      if (onEnter && e.key === 'Enter') {
-        onEnter(e)
-      }
-      onKeyDown?.(e)
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      onChange?.(e)
+      onChangeValue?.(e.target.value)
     }
     const classNames = {
       root: clsx(s.box, className),
@@ -62,7 +61,7 @@ export const TextField = /* @__PURE__ */ forwardRef<HTMLInputElement, TextFieldP
       activeInput: s.activeInput,
     }
 
-    const isShowClearButton = onClearClick && rest?.value?.length! > 0
+    const isShowClearButton = onClearClick && value?.length! > 0
 
     const dataIconStart = iconSearch ? 'search' : ''
     const dataIconEnd = iconEnd ? 'end' : ''
@@ -82,11 +81,11 @@ export const TextField = /* @__PURE__ */ forwardRef<HTMLInputElement, TextFieldP
               </span>
             )}
             <input
-              className={rest?.value?.length! > 0 ? classNames.activeInput : classNames.input}
+              className={value?.length! > 0 ? classNames.activeInput : classNames.input}
               type={showPassword ? 'text' : 'password'}
               ref={ref}
               data-icon={dataIcon}
-              onKeyDown={handleKeyDown}
+              onChange={handleChange}
               disabled={disabled}
               {...rest}
             />
