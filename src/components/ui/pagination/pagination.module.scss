@@ -1,0 +1,72 @@
+.root {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  gap: 12px;
+  list-style-type: none;
+}
+
+@mixin item {
+  all: unset;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  color: var(--color-light-100);
+
+  border-radius: 2px;
+}
+
+.item {
+  @include item;
+
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:focus {
+    border: var(--color-info-900);
+  }
+
+  &:hover:not(&:disabled) {
+    background-color: var(--color-dark-500);
+  }
+
+  &.active {
+    color: var(--color-dark-900);
+    background-color: var(--color-light-100);
+  }
+}
+
+.selectBox {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  font-size: var(--font-size-s);
+  color: var(--color-light-100);
+  white-space: nowrap;
+}
+
+.select {
+  display: flex;
+  height: 24px;
+  font-size: var(--font-size-s);
+}
+
+.button {
+  display: flex;
+  background: transparent;
+  border: none;
+
+  &:disabled {
+    color: var(--color-dark-100);
+  }
+}
