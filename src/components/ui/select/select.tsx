@@ -56,10 +56,12 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       icon: s.icon,
       value: s.value,
       item: s.item,
+      label: s.label,
     }
 
     return (
       <LabelRadix.Root {...rest}>
+        {label && <div className={classNames.label}>{label}</div>}
         <>{showError && <Typography.Error>{errorMessage}</Typography.Error>}</>
         <div className={classNames.root} ref={ref}>
           <RadixSelect.Root
