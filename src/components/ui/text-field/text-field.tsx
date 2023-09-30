@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, forwardRef, ReactNode, useState, ChangeEvent } from 'react'
+import { forwardRef, ReactNode, useState, ChangeEvent, ComponentPropsWithoutRef } from 'react'
 
 import { clsx } from 'clsx'
 
@@ -67,6 +67,8 @@ export const TextField = /* @__PURE__ */ forwardRef<HTMLInputElement, TextFieldP
     const dataIconEnd = iconEnd ? 'end' : ''
     const dataIcon = dataIconStart + dataIconEnd
 
+    const inputClass = `${classNames.input} ${value?.length > 0 ? classNames.activeInput : ''}`
+
     return (
       <div className={classNames.root}>
         <div className={classNames.mainContainer}>
@@ -81,7 +83,7 @@ export const TextField = /* @__PURE__ */ forwardRef<HTMLInputElement, TextFieldP
               </span>
             )}
             <input
-              className={value?.length! > 0 ? classNames.activeInput : classNames.input}
+              className={inputClass}
               type={showPassword ? 'text' : 'password'}
               ref={ref}
               data-icon={dataIcon}
