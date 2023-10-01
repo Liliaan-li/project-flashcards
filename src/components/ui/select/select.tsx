@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { ComponentPropsWithoutRef, ElementRef, forwardRef } from 'react'
 
 import * as LabelRadix from '@radix-ui/react-label'
 import * as RadixSelect from '@radix-ui/react-select'
@@ -10,43 +10,19 @@ import s from './select.module.scss'
 
 import { ArrowDown } from '@/assets/icons/components/arrow/arrow-down-icon.tsx'
 
-type Option =
-  | { label: string; value: string }
-  | { label: string; value: number }
-  | { label: number; value: string }
-  | { label: number; value: number }
+type Option = { label: string; value: string }
 
-type ValueAndOnChangeProps =
-  | {
-      value: string
-      onChange: (value: string) => void
-    }
-  | {
-      value: number
-      onChange: (value: number) => void
-    }
-  | {
-      value: string[]
-      onChange: (value: Array<string>) => void
-    }
-  | {
-      value: number[]
-      onChange: (value: Array<number>) => void
-    }
-
-export type CommonProps = {
+export type SelectProps = {
   options: Option[]
   placeholder?: string
   label?: string
   className?: string
   errorMessage?: string
   disabled?: boolean
-}
+} & ComponentPropsWithoutRef<typeof RadixSelect.Root>
 
-type SelectProps = CommonProps & ValueAndOnChangeProps
-
-export const Select = forwardRef<HTMLDivElement, SelectProps>(
-  ({ value, onChange, options, label, className, errorMessage, disabled, ...rest }, ref) => {
+export const Select = forwardRef<ElementRef<typeof RadixSelect.Root>, SelectProps>(
+  ({ value, onValueChange, options, label, className, errorMessage, disabled, ...rest }, ref) => {
     const showError = !!errorMessage && errorMessage.length > 0
     const classNames = {
       root: s.root,
@@ -63,12 +39,8 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       <LabelRadix.Root {...rest}>
         {label && <div className={classNames.label}>{label}</div>}
         <>{showError && <Typography.Error>{errorMessage}</Typography.Error>}</>
-        <div className={classNames.root} ref={ref}>
-          <RadixSelect.Root
-            value={value as string}
-            onValueChange={onChange as () => void}
-            disabled={disabled}
-          >
+        <div className={classNames.root}>
+          <RadixSelect.Root value={value} onValueChange={onValueChange} disabled={disabled}>
             <RadixSelect.Trigger className={classNames.trigger}>
               <RadixSelect.Value className={classNames.value}>{value}</RadixSelect.Value>
               <RadixSelect.Icon className={classNames.icon}>
@@ -81,6 +53,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
                 className={classNames.content}
                 collisionPadding={0}
                 sideOffset={0}
+                ref={ref}
               >
                 <RadixSelect.ScrollUpButton />
                 <RadixSelect.Viewport className={classNames.viewport}>
