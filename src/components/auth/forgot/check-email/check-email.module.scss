@@ -1,0 +1,23 @@
+.card {
+  max-width: 100%;
+  min-height: 100%;
+
+  .title {
+    margin-bottom: 1.6875rem;
+    text-align: center;
+  }
+
+  .icon {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 1.6875rem 0 1.1875rem;
+  }
+
+  .instructions {
+    padding: 1.1875rem 0 4.0625rem;
+    color: var(--color-light-900);
+    text-align: center;
+    opacity: 0.5;
+  }
+}
