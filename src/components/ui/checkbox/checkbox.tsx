@@ -10,7 +10,7 @@ import { Check } from '../../../assets/icons'
 import s from './checkbox.module.scss'
 
 export type CheckboxProps = {
-  checked: boolean
+  checked?: boolean
   onChange: (checked: boolean) => void
   disabled?: boolean
   required?: boolean

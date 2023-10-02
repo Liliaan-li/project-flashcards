@@ -1,17 +1,28 @@
+import { useForm } from 'react-hook-form'
+
+import { ControlledCheckbox } from './components/ui/controlled/conrolled-checkbox/controlled-checkbox'
+import { Typography } from './components/ui/typography/typography'
+import className from './components/ui/typography/typography.module.scss'
+import { LogoutIcon } from './assets/icons/components/logout/logout-icon'
+
 import { useState, Fragment } from 'react'
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { TabContent, Tabs } from '@/components/ui/tab-switcher'
 
 export function App() {
-  const [bool, setBool] = useState<boolean>(false)
-
-  function onChange(checked: boolean): void {
-    setBool(checked)
-  }
+  const { control } = useForm()
 
   return (
     <div>
+      <Typography.Link2 className={className.link2}>Hi</Typography.Link2>
+      <ControlledCheckbox
+        control={control}
+        name={'rememberMe'}
+        onChange={function (checked: boolean): void {
+          throw new Error('Function not implemented.')
+        }}
+      />
       <Tabs
         tabs={[
           { value: 'sprints', title: 'Switch1' },
