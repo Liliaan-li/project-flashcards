@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { EditProfile }  from '../../../components/profile/edit-profile'
 
 const meta = {
-  title: 'Profile/Personal information',
+  title: 'Profile/edit profile',
   component: EditProfile,
   tags: ['autodocs'],
 } satisfies Meta<typeof EditProfile>
