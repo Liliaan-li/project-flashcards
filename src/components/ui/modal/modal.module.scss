@@ -1,0 +1,49 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(23 23 23 / 90%);
+  backdrop-filter: blur(4px);
+}
+
+.content {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  translate: -50%;
+
+  width: 420px;
+  max-height: 100%;
+  padding: 25px;
+
+  background-color: var(--color-dark-700);
+  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 7%)) drop-shadow(0 2px 2px rgb(0 0 0 / 6%));
+  border: 1px solid rgb(64 64 64);
+  border-radius: 0.125rem;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-light-100);
+  text-align: left;
+}
+
+.close {
+  cursor: pointer;
+
+  position: absolute;
+  top: 20px;
+  right: 10px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: none;
+}
+
+.learn {
+  .title {
+    text-align: center;
+  }
+}
