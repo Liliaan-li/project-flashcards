@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { ForgotPassword } from '../../../../components/auth/forgot/forgot-password'
+import { ForgotPassword } from '@/components/auth/forgot/forgot-password'
 
 const meta = {
   title: 'Auth/Forgot password',
