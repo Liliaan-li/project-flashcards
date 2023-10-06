@@ -1,10 +1,11 @@
-import { Typography } from '@/components/ui/typography'
 import s from './edit-profile.module.scss'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+
 import Camera from '@/assets/icons/components/camera/camera'
 import Edit from '@/assets/icons/components/edit/edit'
 import { LogoutIcon } from '@/assets/icons/components/logout/logout-icon'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Typography } from '@/components/ui/typography'
 
 type Props = {
   email: string
