@@ -80,7 +80,7 @@ export const Checkbox: FC<CheckboxProps> = ({
             </AnimatePresence>
           </CheckboxRadix.Root>
         </div>
-        click here
+        {label}
       </LabelRadix.Root>
     </div>
   )
