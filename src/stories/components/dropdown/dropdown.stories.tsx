@@ -1,4 +1,3 @@
-import { Tooltip } from '@radix-ui/react-tooltip'
 import { Meta } from '@storybook/react'
 import { JSX } from 'react/jsx-runtime'
 

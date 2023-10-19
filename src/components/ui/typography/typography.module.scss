@@ -43,6 +43,10 @@
   @include typography(var(--font-size-xs), var(--line-height-s), var(--font-weight-bold));
 }
 
+.caption {
+  @include typography(var(--font-size-xs), var(--line-height-s), var(--font-weight-regular));
+}
+
 .link1 {
   @include typography(var(--font-size-s), var(--line-height-m), var(--font-weight-regular));
 

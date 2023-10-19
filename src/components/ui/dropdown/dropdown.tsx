@@ -159,7 +159,7 @@ export const ToolbarItemWithIcon: FC<ToolbarItemWithIconProps> = ({
     >
       <motion.div {...item}>
         <div className={classNames.itemIcon}>{icon}</div>
-        <Typography.Subtitle1>{text}</Typography.Subtitle1>
+        <Typography.Caption>{text}</Typography.Caption>
       </motion.div>
     </DropdownMenuRadix.Item>
   )
