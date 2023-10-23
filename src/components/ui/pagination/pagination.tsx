@@ -12,13 +12,13 @@ export type PaginationProps = {
   currentPage: number
   lastPage: number
   maxLength: number
-  count: number
+  count?: number
   setCurrentPage: (page: number) => void
   page?: number
   pageOptions: number[]
   pageChange?: (itemPage: number) => void
   active?: boolean
-  onChange: (page: number) => void
+  onChange?: (page: number) => void
   className?: string
 }
 
@@ -34,13 +34,13 @@ export const Pagination = ({
   const pageNums = usePagination(currentPage, lastPage, maxLength)
   const [selectedPage, setSelectedPage] = useState(currentPage)
 
-  const handleChangePage = (selectedPage: number) => {
-    setSelectedPage(selectedPage)
-    setCurrentPage(selectedPage)
+  const handleChangePage = (selectedPage: string) => {
+    setSelectedPage(+selectedPage)
+    setCurrentPage(+selectedPage)
   }
   const selectOptions = pageOptions.map(value => ({
-    label: value,
-    value,
+    label: value.toString(),
+    value: value.toString(),
   }))
 
   const isFirstPage = currentPage === 1
@@ -94,9 +94,9 @@ export const Pagination = ({
           Показать
           <Select
             className={classNames.select}
-            value={selectedPage}
+            value={selectedPage.toString()}
             options={selectOptions}
-            onChange={handleChangePage}
+            onValueChange={handleChangePage}
           />
           на странице
         </div>
