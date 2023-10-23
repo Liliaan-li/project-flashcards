@@ -32,11 +32,13 @@ export type CreateDeckArgsType = Pick<Deck, 'name' | 'cover' | 'isPrivate'>
 type Direction = 'asc' | 'desc'
 type Field = 'name' | 'rating' | 'created' | 'updated'
 export type GetDecksParams = {
-  minCardsCount?: string
-  maxCardsCount?: string
+  minCardsCount?: number
+  maxCardsCount?: number
   name?: string
   authorId?: string
   orderBy?: `${Field}-${Direction}`
   currentPage?: number
   itemsPerPage?: number
 }
+
+export type Tab = 'all' | 'my'
