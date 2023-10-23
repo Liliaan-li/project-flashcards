@@ -46,7 +46,6 @@ export const CreateNewPassword = ({ onSubmit }: CreateNewPasswordProps) => {
             placeholder="Password"
             name="password"
             control={control}
-            type="password"
             label="Password"
             iconEnd={true}
           />
