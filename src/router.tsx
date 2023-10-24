@@ -8,12 +8,26 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { Table } from '@/components/ui/table'
-import { useCreateDeckMutation, useGetDecksQuery } from '@/services/decks/decks.service.ts'
+import { TextField } from '@/components/ui/text-field'
+import { SignInPage } from '@/pages'
+import { useLogoutMutation, useMeQuery } from '@/services/auth/auth.service.ts'
+import {
+  useCreateDeckMutation,
+  useDeleteDeckMutation,
+  useGetDecksQuery,
+} from '@/services/decks/decks.service.ts'
+import { decksSlice } from '@/services/decks/decks.slice.ts'
+import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 
 const publicRoutes: RouteObject[] = [
   {
-    path: '/login',
-    element: <div>login</div>,
+    children: [
+      {
+        element: <SignInPage />,
+        path: '/login',
+      },
+    ],
+    element: <Outlet />,
   },
 ]
 
@@ -33,24 +47,36 @@ const router = createBrowserRouter([
 ])
 
 export const Router = () => {
-  const { data, isLoading, isError } = useGetDecksQuery()
+  const [logout] = useLogoutMutation()
 
-  if (isLoading) return <div>Loading...</div>
-  if (isError) return <div>Error...</div>
-  console.log(data)
-
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <Button onClick={logout}>logout</Button>
+      <RouterProvider router={router} />
+    </>
+  )
 }
 
 function PrivateRoutes() {
-  const isAuthenticated = true
+  const { isError, isLoading } = useMeQuery()
+  const isAuthenticated = !isError
+
+  if (isLoading) return <div>Loading...</div>
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
 }
 
 function Component() {
-  const { data } = useGetDecksQuery()
+  const dispatch = useAppDispatch()
+
+  const currentPage = useAppSelector(state => state.decks.currentPage)
+  const searchByName = useAppSelector(state => state.decks.searchByName)
+
+  const setSearchByName = (name: string) => dispatch(decksSlice.actions.setSearchByName(name))
+
+  const { data } = useGetDecksQuery({ currentPage, name: searchByName })
   const [createDeck, { isLoading: isDeckBeingCreated }] = useCreateDeckMutation()
+  const [deleteDeck] = useDeleteDeckMutation()
 
   return (
     <>
@@ -62,6 +88,11 @@ function Component() {
       >
         Create Deck
       </Button>
+      <TextField
+        value={searchByName}
+        iconSearch={true}
+        onChange={e => setSearchByName(e.currentTarget.value)}
+      />
       {isDeckBeingCreated && <div>Creating deck....</div>}
       <Table.Root>
         <Table.Head>
@@ -70,7 +101,8 @@ function Component() {
             <Table.HeadCell>Cards</Table.HeadCell>
             <Table.HeadCell>Last Updated</Table.HeadCell>
             <Table.HeadCell>Created by</Table.HeadCell>
-            <Table.HeadCell></Table.HeadCell>
+            <Table.HeadCell>Icons</Table.HeadCell>
+            <Table.HeadCell>Actions</Table.HeadCell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
@@ -81,6 +113,9 @@ function Component() {
               <Table.Cell>{new Date(item.updated).toLocaleDateString()}</Table.Cell>
               <Table.Cell>{item.author.name}</Table.Cell>
               <Table.Cell>icons...</Table.Cell>
+              <Table.Cell>
+                <button onClick={() => deleteDeck({ id: item.id })}>delete</button>
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

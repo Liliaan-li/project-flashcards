@@ -8,8 +8,16 @@ export const decksSlice = createSlice({
     minCards: 0,
     maxCards: undefined as number | undefined,
     currentTab: 'all' as Tab,
+    searchByName: '',
+    currentPage: 1,
   },
   reducers: {
+    setSearchByName: (state, action: PayloadAction<string>) => {
+      state.searchByName = action.payload
+    },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload
+    },
     setCurrentTab: (state, action: PayloadAction<Tab>) => {
       state.currentTab = action.payload
     },
