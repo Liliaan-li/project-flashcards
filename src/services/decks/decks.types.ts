@@ -42,3 +42,5 @@ export type GetDecksParams = {
 }
 
 export type Tab = 'all' | 'my'
+
+export type DeleteDeckArgs = Pick<Deck, 'id'>

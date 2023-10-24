@@ -12,8 +12,13 @@ import { useGetDecksQuery } from '@/services/decks/decks.service.ts'
 
 const publicRoutes: RouteObject[] = [
   {
-    path: '/login',
-    element: <div>login</div>,
+    children: [
+      {
+        element: <SignInPage />,
+        path: '/login',
+      },
+    ],
+    element: <Outlet />,
   },
 ]
 
@@ -46,20 +51,25 @@ const router = createBrowserRouter([
 ])
 
 export const Router = () => {
-  const { data, isLoading, isError } = useGetDecksQuery()
+  const [logout] = useLogoutMutation()
 
-  if (isLoading) return <div>Loading...</div>
-  if (isError) return <div>Error...</div>
-  console.log(data)
-
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <Button onClick={logout}>logout</Button>
+      <RouterProvider router={router} />
+    </>
+  )
 }
 
 function PrivateRoutes() {
-  const isAuthenticated = true
+  const { isError, isLoading } = useMeQuery()
+  const isAuthenticated = !isError
+
+  if (isLoading) return <div>Loading...</div>
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
 }
+
 //просто чтоб было
 // function Component() {
 //   const { data } = useGetDecksQuery()
