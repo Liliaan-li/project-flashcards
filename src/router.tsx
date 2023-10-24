@@ -6,18 +6,9 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-import { Button } from '@/components/ui/button'
-import { Table } from '@/components/ui/table'
-import { TextField } from '@/components/ui/text-field'
-import { SignInPage } from '@/pages'
-import { useLogoutMutation, useMeQuery } from '@/services/auth/auth.service.ts'
-import {
-  useCreateDeckMutation,
-  useDeleteDeckMutation,
-  useGetDecksQuery,
-} from '@/services/decks/decks.service.ts'
-import { decksSlice } from '@/services/decks/decks.slice.ts'
-import { useAppDispatch, useAppSelector } from '@/services/store.ts'
+import { Header } from '@/components/ui/header'
+import { DecksPage } from '@/pages/decks-page/decks-page.tsx'
+import { useGetDecksQuery } from '@/services/decks/decks.service.ts'
 
 const publicRoutes: RouteObject[] = [
   {
@@ -34,7 +25,20 @@ const publicRoutes: RouteObject[] = [
 const privateRoutes: RouteObject[] = [
   {
     path: '/',
-    element: <Component />,
+    element: (
+      <>
+        <Header
+          isAuth={true}
+          userInfo={{
+            name: 'Buba',
+            avatar:
+              'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg',
+            email: 'ioji@gmaikjjjjjjjjjjjjjjjjjjl.com',
+          }}
+        />
+        <DecksPage />
+      </>
+    ),
   },
 ]
 
@@ -66,60 +70,44 @@ function PrivateRoutes() {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
 }
 
-function Component() {
-  const dispatch = useAppDispatch()
-
-  const currentPage = useAppSelector(state => state.decks.currentPage)
-  const searchByName = useAppSelector(state => state.decks.searchByName)
-
-  const setSearchByName = (name: string) => dispatch(decksSlice.actions.setSearchByName(name))
-
-  const { data } = useGetDecksQuery({ currentPage, name: searchByName })
-  const [createDeck, { isLoading: isDeckBeingCreated }] = useCreateDeckMutation()
-  const [deleteDeck] = useDeleteDeckMutation()
-
-  return (
-    <>
-      <Button
-        onClick={() => {
-          createDeck({ name: 'new deck1' })
-        }}
-        style={{ width: '180px' }}
-      >
-        Create Deck
-      </Button>
-      <TextField
-        value={searchByName}
-        iconSearch={true}
-        onChange={e => setSearchByName(e.currentTarget.value)}
-      />
-      {isDeckBeingCreated && <div>Creating deck....</div>}
-      <Table.Root>
-        <Table.Head>
-          <Table.Row>
-            <Table.HeadCell>Name</Table.HeadCell>
-            <Table.HeadCell>Cards</Table.HeadCell>
-            <Table.HeadCell>Last Updated</Table.HeadCell>
-            <Table.HeadCell>Created by</Table.HeadCell>
-            <Table.HeadCell>Icons</Table.HeadCell>
-            <Table.HeadCell>Actions</Table.HeadCell>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>
-          {data?.items.map(item => (
-            <Table.Row key={item.id}>
-              <Table.Cell>{item.name}</Table.Cell>
-              <Table.Cell>{item.cardsCount}</Table.Cell>
-              <Table.Cell>{new Date(item.updated).toLocaleDateString()}</Table.Cell>
-              <Table.Cell>{item.author.name}</Table.Cell>
-              <Table.Cell>icons...</Table.Cell>
-              <Table.Cell>
-                <button onClick={() => deleteDeck({ id: item.id })}>delete</button>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
-    </>
-  )
-}
+//просто чтоб было
+// function Component() {
+//   const { data } = useGetDecksQuery()
+//   const [createDeck, { isLoading: isDeckBeingCreated }] = useCreateDeckMutation()
+//
+//   return (
+//     <>
+//       <Button
+//         onClick={() => {
+//           createDeck({ name: 'new deck1' })
+//         }}
+//         style={{ width: '180px' }}
+//       >
+//         Create Deck
+//       </Button>
+//       {isDeckBeingCreated && <div>Creating deck....</div>}
+//       <Table.Root>
+//         <Table.Head>
+//           <Table.Row>
+//             <Table.HeadCell>Name</Table.HeadCell>
+//             <Table.HeadCell>Cards</Table.HeadCell>
+//             <Table.HeadCell>Last Updated</Table.HeadCell>
+//             <Table.HeadCell>Created by</Table.HeadCell>
+//             <Table.HeadCell></Table.HeadCell>
+//           </Table.Row>
+//         </Table.Head>
+//         <Table.Body>
+//           {data?.items.map(item => (
+//             <Table.Row key={item.id}>
+//               <Table.Cell>{item.name}</Table.Cell>
+//               <Table.Cell>{item.cardsCount}</Table.Cell>
+//               <Table.Cell>{new Date(item.updated).toLocaleDateString()}</Table.Cell>
+//               <Table.Cell>{item.author.name}</Table.Cell>
+//               <Table.Cell>icons...</Table.Cell>
+//             </Table.Row>
+//           ))}
+//         </Table.Body>
+//       </Table.Root>
+//     </>
+//   )
+// }

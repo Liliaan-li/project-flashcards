@@ -5,10 +5,8 @@ import { store } from '@/services/store.ts'
 
 export function App() {
   return (
-    <>
-      <Provider store={store}>
-        <Router />
-      </Provider>
-    </>
+    <Provider store={store}>
+      <Router />{' '}
+    </Provider>
   )
 }

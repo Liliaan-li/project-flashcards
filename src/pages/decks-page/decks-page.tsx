@@ -3,9 +3,13 @@ import { useState } from 'react'
 import s from './decks-page.module.scss'
 
 import DeleteForever from '@/assets/icons/components/DeleteForever/DeleteForever.tsx'
+import { DeleteOutlined } from '@/assets/icons/components/DeleteForever/DeleteOutlined.tsx'
+import Edit from '@/assets/icons/components/edit/edit.tsx'
+import { Play } from '@/assets/icons/components/play/Play.tsx'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Tabs } from '@/components/ui/tab-switcher'
+import { Table } from '@/components/ui/table'
 import { TextField } from '@/components/ui/text-field'
 import { Typography } from '@/components/ui/typography'
 import { Tab, useGetDecksQuery } from '@/services/decks'
@@ -51,6 +55,7 @@ export const DecksPage = () => {
   if (!decks) {
     return <div>loading...</div>
   }
+  console.log(decks.items)
 
   return (
     <div className={s.container}>
@@ -90,6 +95,45 @@ export const DecksPage = () => {
               Clear filters
             </Button>
           </div>
+        </div>
+
+        <div>
+          <Table.Head>
+            <Table.Row>
+              <Table.HeadCell className={s.table_cell_name}>Name</Table.HeadCell>
+              <Table.HeadCell className={s.table_cell_cards}>Cards</Table.HeadCell>
+              <Table.HeadCell className={s.table_cell_lastUpdated}>Last Updated</Table.HeadCell>
+              <Table.HeadCell className={s.table_cell_creator}>Created by</Table.HeadCell>
+              <Table.HeadCell className={s.table_cell_empty} />
+            </Table.Row>
+          </Table.Head>
+          <Table.Body>
+            {decks.items.map(item => (
+              <Table.Row key={item.id}>
+                <Table.Cell>
+                  <div className={s.nameCell}>
+                    {item.cover !== null ? (
+                      <img alt={item.name} src={item.cover} className={s.deckImage} />
+                    ) : (
+                      ' '
+                    )}
+
+                    {item.name}
+                  </div>
+                </Table.Cell>
+                <Table.Cell>{item.cardsCount}</Table.Cell>
+                <Table.Cell>{new Date(item.updated).toLocaleString()}</Table.Cell>
+                <Table.Cell>{item.author.name}</Table.Cell>
+                <Table.Cell>
+                  <div className={s.options}>
+                    <Play size={16} />
+                    <Edit />
+                    <DeleteOutlined size={16} />
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
         </div>
       </div>
     </div>
