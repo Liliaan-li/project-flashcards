@@ -91,14 +91,14 @@ export const Pagination = ({
             pageChange,
           }}
         >
-          Показать
+          Show
           <Select
             className={classNames.select}
             value={selectedPage.toString()}
             options={selectOptions}
             onValueChange={handleChangePage}
           />
-          на странице
+          in page
         </div>
       )}
     </div>
