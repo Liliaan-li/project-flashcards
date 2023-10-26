@@ -1,0 +1,43 @@
+.table {
+  width: 100%;
+}
+
+.table_cell_name {
+  width: 26%;
+  text-align: left;
+}
+
+.table_cell_cards {
+  width: 14%;
+  text-align: left;
+}
+
+.table_cell_lastUpdated {
+  width: 20%;
+  text-align: left;
+}
+
+.table_cell_creator {
+  width: 29%;
+  text-align: left;
+}
+
+.table_cell_empty {
+  width: 11%;
+}
+
+.nameCell {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.deckImage {
+  max-width: 200px;
+  height: 40px;
+}
+
+.options {
+  display: flex;
+  gap: 10px;
+}
