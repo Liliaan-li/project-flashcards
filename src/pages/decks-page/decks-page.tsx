@@ -12,7 +12,9 @@ import { Typography } from '@/components/ui/typography'
 import TableForDecksPage from '@/pages/decks-page/Table/table-for-decks-page.tsx'
 import { Tab, useGetDecksQuery } from '@/services/decks'
 import {
+  selectDecksCurrentPage,
   selectDecksCurrentTab,
+  selectDecksItemsPerPage,
   selectDecksMaxCards,
   selectDecksMinCards,
 } from '@/services/decks/decks.selectors.ts'
@@ -25,12 +27,20 @@ export const DecksPage = () => {
   const minCards = useAppSelector(selectDecksMinCards)
   const maxCards = useAppSelector(selectDecksMaxCards)
   const currentTab = useAppSelector(selectDecksCurrentTab)
+  const itemsPerPage = useAppSelector(selectDecksItemsPerPage)
+  const currentPage = useAppSelector(selectDecksCurrentPage)
 
   const [rangeValue, setRangeValue] = useState([minCards, maxCards])
 
   const setMinCards = (minCards: number) => dispatch(decksSlice.actions.setMinCards(minCards))
   const setMaxCards = (maxCards: number) => dispatch(decksSlice.actions.setMaxCards(maxCards))
   const setCurrentTab = (tab: Tab) => dispatch(decksSlice.actions.setCurrentTab(tab))
+  const setCurrentPage = (page: number) => {
+    console.log('current page' + page)
+    dispatch(decksSlice.actions.setCurrentPage(page))
+  }
+  const setPageElementsCount = (page: number) =>
+    dispatch(decksSlice.actions.setPageElementsCount(page))
 
   const resetFilters = () => {
     dispatch(decksSlice.actions.resetFilters())
@@ -48,12 +58,14 @@ export const DecksPage = () => {
     authorId,
     maxCardsCount: maxCards,
     minCardsCount: minCards,
+    currentPage: currentPage,
+    itemsPerPage: itemsPerPage,
   })
 
   if (!decks) {
     return <div>loading...</div>
   }
-  console.log(decks)
+  console.log(itemsPerPage)
 
   return (
     <div className={s.container}>
@@ -99,13 +111,17 @@ export const DecksPage = () => {
 
         <div className={s.paginationContainer}>
           <Pagination
-            page={8}
-            pageChange={() => {}}
+            page={itemsPerPage}
+            pageChange={itemPage => {
+              setPageElementsCount(itemPage)
+            }}
             currentPage={decks.pagination.currentPage}
             lastPage={decks.pagination.totalPages}
-            maxLength={5}
-            setCurrentPage={() => {}}
-            pageOptions={[1, 5, 8, 12, 20]}
+            maxLength={7}
+            setCurrentPage={page => {
+              setCurrentPage(page)
+            }}
+            pageOptions={[5, 7, 10, 12]}
           />
         </div>
       </div>

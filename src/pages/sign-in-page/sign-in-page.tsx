@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom'
 
 import { SignIn } from '@/components/auth/login/sign-in'
+import { Header } from '@/components/ui/header'
 import { useLoginMutation, useMeQuery } from '@/services/auth/auth.service.ts'
 
 export const SignInPage = () => {
@@ -13,7 +14,10 @@ export const SignInPage = () => {
 
   return (
     <>
-      <SignIn onSubmit={logIn} />
+      <Header isAuth={isAuthenticated} />
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2%' }}>
+        <SignIn onSubmit={logIn} />
+      </div>
     </>
   )
 }
