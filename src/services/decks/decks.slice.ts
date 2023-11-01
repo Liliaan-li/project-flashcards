@@ -10,6 +10,7 @@ export const decksSlice = createSlice({
     currentTab: 'all' as Tab,
     searchByName: '',
     currentPage: 1,
+    page: 7,
   },
   reducers: {
     setSearchByName: (state, action: PayloadAction<string>) => {
@@ -17,6 +18,9 @@ export const decksSlice = createSlice({
     },
     setCurrentPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload
+    },
+    setPageElementsCount: (state, action: PayloadAction<number>) => {
+      state.page = action.payload
     },
     setCurrentTab: (state, action: PayloadAction<Tab>) => {
       state.currentTab = action.payload

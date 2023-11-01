@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import s from './pagination.module.scss'
 
 import { ArrowLeft } from '@/assets/icons/components/arrow/arrow-left-icon.tsx'
@@ -14,9 +12,9 @@ export type PaginationProps = {
   maxLength: number
   count?: number
   setCurrentPage: (page: number) => void
-  page?: number
+  page: number
   pageOptions: number[]
-  pageChange?: (itemPage: number) => void
+  pageChange: (itemPage: number) => void
   active?: boolean
   onChange?: (page: number) => void
   className?: string
@@ -32,11 +30,10 @@ export const Pagination = ({
   pageChange,
 }: PaginationProps) => {
   const pageNums = usePagination(currentPage, lastPage, maxLength)
-  const [selectedPage, setSelectedPage] = useState(currentPage)
 
   const handleChangePage = (selectedPage: string) => {
-    setSelectedPage(+selectedPage)
-    setCurrentPage(+selectedPage)
+    pageChange(+selectedPage)
+    // setCurrentPage(+selectedPage)
   }
   const selectOptions = pageOptions.map(value => ({
     label: value.toString(),
@@ -86,7 +83,7 @@ export const Pagination = ({
         <div
           className={classNames.selectBox}
           {...{
-            page: selectedPage,
+            page: page,
             pageOptions,
             pageChange,
           }}
@@ -94,7 +91,7 @@ export const Pagination = ({
           Show
           <Select
             className={classNames.select}
-            value={selectedPage.toString()}
+            value={page.toString()}
             options={selectOptions}
             onValueChange={handleChangePage}
           />

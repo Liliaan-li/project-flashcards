@@ -6,9 +6,9 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-import { Header } from '@/components/ui/header'
-import { DecksPage } from '@/pages/decks-page/decks-page.tsx'
-import { useGetDecksQuery } from '@/services/decks/decks.service.ts'
+import { SignInPage } from '@/pages'
+import { MainDecksPage } from '@/pages/decks-page/decks-page-with-header/decks-page-with-header.tsx'
+import { useLogoutMutation, useMeQuery } from '@/services/auth/auth.service.ts'
 
 const publicRoutes: RouteObject[] = [
   {
@@ -25,20 +25,7 @@ const publicRoutes: RouteObject[] = [
 const privateRoutes: RouteObject[] = [
   {
     path: '/',
-    element: (
-      <>
-        <Header
-          isAuth={true}
-          userInfo={{
-            name: 'Buba',
-            avatar:
-              'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg',
-            email: 'ioji@gmaikjjjjjjjjjjjjjjjjjjl.com',
-          }}
-        />
-        <DecksPage />
-      </>
-    ),
+    element: <MainDecksPage />,
   },
 ]
 
@@ -55,7 +42,7 @@ export const Router = () => {
 
   return (
     <>
-      <Button onClick={logout}>logout</Button>
+      {/*<Button onClick={logout}>logout</Button>*/}
       <RouterProvider router={router} />
     </>
   )

@@ -12,7 +12,12 @@ type TablePropsType = {
 
 const TableForDecksPage = ({ decks }: TablePropsType) => {
   return (
-    <div>
+    <div
+      style={{
+        borderLeft: '1px solid var(--color-dark-500)',
+        borderRight: '1px solid var(--color-dark-500)',
+      }}
+    >
       <Table.Head>
         <Table.Row>
           <Table.HeadCell className={s.table_cell_name}>Name</Table.HeadCell>
