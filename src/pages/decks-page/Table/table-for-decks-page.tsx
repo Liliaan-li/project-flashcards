@@ -12,12 +12,7 @@ type TablePropsType = {
 
 const TableForDecksPage = ({ decks }: TablePropsType) => {
   return (
-    <div
-      style={{
-        borderLeft: '1px solid var(--color-dark-500)',
-        borderRight: '1px solid var(--color-dark-500)',
-      }}
-    >
+    <Table.Root>
       <Table.Head>
         <Table.Row>
           <Table.HeadCell className={s.table_cell_name}>Name</Table.HeadCell>
@@ -27,7 +22,12 @@ const TableForDecksPage = ({ decks }: TablePropsType) => {
           <Table.HeadCell className={s.table_cell_empty} />
         </Table.Row>
       </Table.Head>
-      <Table.Body>
+      <Table.Body
+        style={{
+          borderLeft: '1px solid var(--color-dark-500)',
+          borderRight: '1px solid var(--color-dark-500)',
+        }}
+      >
         {decks.items.map(item => (
           <Table.Row key={item.id}>
             <Table.Cell>
@@ -53,7 +53,7 @@ const TableForDecksPage = ({ decks }: TablePropsType) => {
           </Table.Row>
         ))}
       </Table.Body>
-    </div>
+    </Table.Root>
   )
 }
 

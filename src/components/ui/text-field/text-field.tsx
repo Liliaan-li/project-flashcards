@@ -89,6 +89,7 @@ export const TextField = /* @__PURE__ */ forwardRef<HTMLInputElement, TextFieldP
               data-icon={dataIcon}
               onChange={handleChange}
               disabled={disabled}
+              value={value}
               {...rest}
             />
             {isShowClearButton && (

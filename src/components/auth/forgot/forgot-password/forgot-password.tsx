@@ -1,6 +1,7 @@
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
 import s from './forgot-password.module.scss'
@@ -21,6 +22,8 @@ type ForgotPasswordProps = {
 }
 
 export const ForgotPassword = ({ onSubmit }: ForgotPasswordProps) => {
+  const navigate = useNavigate()
+
   const { control, handleSubmit } = useForm<FormType>({
     mode: 'onSubmit',
     resolver: zodResolver(forgotPasswordSchema),
@@ -63,7 +66,7 @@ export const ForgotPassword = ({ onSubmit }: ForgotPasswordProps) => {
         <Typography.Body2 className={classNames.rememberPassword}>
           Did you remember your password?
         </Typography.Body2>
-        <Typography.Link1 as="a" href="#" className={classNames.buttonLink}>
+        <Typography.Link1 onClick={() => navigate('/login')} className={classNames.buttonLink}>
           Try logging in
         </Typography.Link1>
       </Card>

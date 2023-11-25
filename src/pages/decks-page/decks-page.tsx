@@ -36,7 +36,6 @@ export const DecksPage = () => {
   const setMaxCards = (maxCards: number) => dispatch(decksSlice.actions.setMaxCards(maxCards))
   const setCurrentTab = (tab: Tab) => dispatch(decksSlice.actions.setCurrentTab(tab))
   const setCurrentPage = (page: number) => {
-    console.log('current page' + page)
     dispatch(decksSlice.actions.setCurrentPage(page))
   }
   const setPageElementsCount = (page: number) =>
@@ -65,7 +64,6 @@ export const DecksPage = () => {
   if (!decks) {
     return <div>loading...</div>
   }
-  console.log(itemsPerPage)
 
   return (
     <div className={s.container}>
@@ -121,7 +119,7 @@ export const DecksPage = () => {
             setCurrentPage={page => {
               setCurrentPage(page)
             }}
-            pageOptions={[5, 7, 10, 12]}
+            options={[5, 7, 10, 12]}
           />
         </div>
       </div>

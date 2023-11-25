@@ -1,20 +1,27 @@
 import { Header } from '@/components/ui/header'
 import { DecksPage } from '@/pages'
-import { useMeQuery } from '@/services/auth/auth.service.ts'
+import { useLogoutMutation, useMeQuery } from '@/services/auth/auth.service.ts'
 
 export const MainDecksPage = () => {
   const { data } = useMeQuery()
+  const [logout] = useLogoutMutation()
+
+  const isAuthenticated = !!data
+
+  if (!data) {
+    return null
+  }
 
   return (
     <div>
       <Header
-        isAuth
+        isAuth={isAuthenticated}
         userInfo={{
           name: data.name,
-          avatar:
-            'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg',
+          avatar: data.avatar,
           email: data.email,
         }}
+        onSignOut={logout}
       />
       <DecksPage />
     </div>

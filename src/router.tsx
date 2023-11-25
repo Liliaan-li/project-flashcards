@@ -8,7 +8,12 @@ import {
 
 import { SignInPage } from '@/pages'
 import { MainDecksPage } from '@/pages/decks-page/decks-page-with-header/decks-page-with-header.tsx'
-import { useLogoutMutation, useMeQuery } from '@/services/auth/auth.service.ts'
+import CheckEmailPage from '@/pages/forgot-pages/check-email-page/check-email-page.tsx'
+import { CreateNewPasswordPage } from '@/pages/forgot-pages/create-new-password-page'
+import { ForgotPasswordPage } from '@/pages/forgot-pages/forgot-password-page/forgot-password-page.tsx'
+import { ProfilePage } from '@/pages/profile-page'
+import { SignUpPage } from '@/pages/sign-up-page'
+import { useMeQuery } from '@/services/auth/auth.service.ts'
 
 const publicRoutes: RouteObject[] = [
   {
@@ -16,6 +21,22 @@ const publicRoutes: RouteObject[] = [
       {
         element: <SignInPage />,
         path: '/login',
+      },
+      {
+        element: <ForgotPasswordPage />,
+        path: '/password-recovery',
+      },
+      {
+        element: <CreateNewPasswordPage />,
+        path: '/create-new-password/:token',
+      },
+      {
+        element: <CheckEmailPage />,
+        path: '/check-email',
+      },
+      {
+        element: <SignUpPage />,
+        path: '/sign-up',
       },
     ],
     element: <Outlet />,
@@ -26,6 +47,10 @@ const privateRoutes: RouteObject[] = [
   {
     path: '/',
     element: <MainDecksPage />,
+  },
+  {
+    path: '/profile',
+    element: <ProfilePage />,
   },
 ]
 
@@ -38,7 +63,7 @@ const router = createBrowserRouter([
 ])
 
 export const Router = () => {
-  const [logout] = useLogoutMutation()
+  // const [logout] = useLogoutMutation()
 
   return (
     <>

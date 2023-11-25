@@ -1,5 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { omit } from 'remeda'
 import { z } from 'zod'
 
 import { Button } from '../../../ui/button'
@@ -9,19 +11,33 @@ import { Card } from '@/components/ui/card'
 import { Typography } from '@/components/ui/typography'
 import className from '@/components/ui/typography/typography.module.scss'
 
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1, 'Password must be at least 1 character'),
-  passwordConfirm: z.string().min(1, 'Password must be at least 1 character'),
-})
+const loginSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(8, 'Password must be at least 8 character'),
+    passwordConfirmation: z.string().min(8, 'Password must be at least 8 character'),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.passwordConfirmation) {
+      ctx.addIssue({
+        message: 'Passwords do not match',
+        code: z.ZodIssueCode.custom,
+        path: ['passwordConfirmation'],
+      })
+    }
+
+    return data
+  })
 
 type FormValues = z.infer<typeof loginSchema>
 
 type SignUpProps = {
-  onSubmit: (data: FormValues) => void
+  onSubmit: (data: Omit<FormValues, 'passwordConfirmation'>) => void
 }
 
 export const SignUp = ({ onSubmit }: SignUpProps) => {
+  const navigate = useNavigate()
+
   const {
     handleSubmit,
     control,
@@ -30,7 +46,7 @@ export const SignUp = ({ onSubmit }: SignUpProps) => {
     resolver: zodResolver(loginSchema),
   })
 
-  const formOnSubmit = handleSubmit(onSubmit)
+  const formOnSubmit = handleSubmit(data => onSubmit(omit(data, ['passwordConfirmation'])))
 
   return (
     <Card>
@@ -53,7 +69,7 @@ export const SignUp = ({ onSubmit }: SignUpProps) => {
           iconEnd
         />
         <ControlledTextField
-          name={'passwordConfirm'}
+          name={'passwordConfirmation'}
           control={control}
           label={'Confirm password'}
           errorMessage={errors.password?.message}
@@ -74,7 +90,9 @@ export const SignUp = ({ onSubmit }: SignUpProps) => {
       >
         Already have an account?
       </Typography.Body2>
-      <Button variant="link">Sign In</Button>
+      <Button variant="link" as={'a'} onClick={() => navigate('/login')}>
+        Sign In
+      </Button>
     </Card>
   )
 }

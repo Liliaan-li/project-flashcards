@@ -13,7 +13,7 @@ export type PaginationProps = {
   count?: number
   setCurrentPage: (page: number) => void
   page: number
-  pageOptions: number[]
+  options: number[]
   pageChange: (itemPage: number) => void
   active?: boolean
   onChange?: (page: number) => void
@@ -26,7 +26,7 @@ export const Pagination = ({
   maxLength,
   setCurrentPage,
   page,
-  pageOptions,
+  options,
   pageChange,
 }: PaginationProps) => {
   const pageNums = usePagination(currentPage, lastPage, maxLength)
@@ -35,7 +35,7 @@ export const Pagination = ({
     pageChange(+selectedPage)
     // setCurrentPage(+selectedPage)
   }
-  const selectOptions = pageOptions.map(value => ({
+  const selectOptions = options.map(value => ({
     label: value.toString(),
     value: value.toString(),
   }))
@@ -43,7 +43,7 @@ export const Pagination = ({
   const isFirstPage = currentPage === 1
   const isLastPage = currentPage === lastPage
 
-  const showPageSelect = !!page && !!pageOptions && !!pageChange
+  const showPageSelect = !!page && !!options && !!pageChange
   const classNames = {
     root: s.root,
     button: s.button,
@@ -84,7 +84,7 @@ export const Pagination = ({
           className={classNames.selectBox}
           {...{
             page: page,
-            pageOptions,
+            options,
             pageChange,
           }}
         >

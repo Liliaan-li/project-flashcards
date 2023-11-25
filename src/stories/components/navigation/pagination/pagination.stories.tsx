@@ -25,7 +25,7 @@ export const Default = () => {
         onChange={setPage}
         count={TOTAL_PAGES_COUNT}
         page={perPage}
-        pageOptions={[1, 5, 8, 12, 20]}
+        options={[1, 5, 8, 12, 20]}
         pageChange={setPerPage}
       />
     </>

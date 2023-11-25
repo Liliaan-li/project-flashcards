@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useController, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
 import { ControlledTextField } from '@/components/controlled/text-field-with-control.tsx'
@@ -11,7 +12,7 @@ import className from '@/components/ui/typography/typography.module.scss'
 
 const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(1, 'Password must be at least 1 character'),
+  password: z.string().min(8, 'Password must be at least 8 character'),
   // rememberMe: z.boolean().default(false),
   rememberMe: z.literal(true, {
     errorMap: () => ({
@@ -27,6 +28,7 @@ type SignInProps = {
 }
 
 export const SignIn = ({ onSubmit }: SignInProps) => {
+  const navigate = useNavigate()
   const {
     handleSubmit,
     control,
@@ -71,6 +73,7 @@ export const SignIn = ({ onSubmit }: SignInProps) => {
             float: 'right',
             marginBottom: '66px',
           }}
+          onClick={() => navigate('/password-recovery')}
         >
           Forgot password?
         </Typography.Link1>
@@ -87,7 +90,10 @@ export const SignIn = ({ onSubmit }: SignInProps) => {
       >
         {`Don't have an account?`}
       </Typography.Body2>
-      <Button variant="link">Sign Up</Button>
+
+      <Button variant="link" as={'a'} onClick={() => navigate('/sign-up')}>
+        Sign Up
+      </Button>
     </Card>
   )
 }
