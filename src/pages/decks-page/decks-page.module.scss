@@ -7,41 +7,6 @@
   margin: 0 auto;
 }
 
-.head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  width: 100%;
-  margin-top: 33px;
-
-  button {
-    width: 200px;
-  }
-}
-
-.filters {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 16px;
-  align-items: center;
-
-  margin-bottom: 36px;
-}
-
-.textField {
-  margin-top: 37px;
-}
-
-.slider {
-  width: 100%;
-  margin-top: 5px;
-}
-
-.button {
-  margin-top: 25px;
-}
-
 .paginationContainer {
   display: flex;
   justify-content: center;
