@@ -2,21 +2,21 @@ import { useState } from 'react'
 
 import s from './decks-page.module.scss'
 
-import DeleteForever from '@/assets/icons/components/DeleteForever/DeleteForever.tsx'
-import { Button } from '@/components/ui/button'
+import { DecksEdit } from '@/components/deck/deck-edit/decks-edit.tsx'
+import { DeleteDeck } from '@/components/deck/delete-deck/delete-deck.tsx'
+import { DecksPanel } from '@/components/decks/decks-panel/decks-panel.tsx'
 import { Pagination } from '@/components/ui/pagination/pagination.tsx'
-import { Slider } from '@/components/ui/slider'
-import { Tabs } from '@/components/ui/tab-switcher'
-import { TextField } from '@/components/ui/text-field'
-import { Typography } from '@/components/ui/typography'
+import { useDebounce } from '@/hooks/use-debounce/use-debounce.ts'
 import TableForDecksPage from '@/pages/decks-page/Table/table-for-decks-page.tsx'
-import { Tab, useGetDecksQuery } from '@/services/decks'
+import { useMeQuery } from '@/services/auth/auth.service.ts'
+import { useDeleteDeckMutation, useGetDecksQuery, useUpdateDeckMutation } from '@/services/decks'
 import {
   selectDecksCurrentPage,
   selectDecksCurrentTab,
   selectDecksItemsPerPage,
   selectDecksMaxCards,
   selectDecksMinCards,
+  selectDecksSearch,
 } from '@/services/decks/decks.selectors.ts'
 import { decksSlice } from '@/services/decks/decks.slice.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
@@ -24,34 +24,30 @@ import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 export const DecksPage = () => {
   const dispatch = useAppDispatch()
 
+  const { data: user } = useMeQuery()
+
   const minCards = useAppSelector(selectDecksMinCards)
   const maxCards = useAppSelector(selectDecksMaxCards)
   const currentTab = useAppSelector(selectDecksCurrentTab)
   const itemsPerPage = useAppSelector(selectDecksItemsPerPage)
   const currentPage = useAppSelector(selectDecksCurrentPage)
+  const search = useAppSelector(selectDecksSearch)
 
-  const [rangeValue, setRangeValue] = useState([minCards, maxCards])
+  const [deckToDeleteId, setDeckToDeleteId] = useState<null | string>(null)
+  const [deckToEditId, setDeckToEditId] = useState<null | string>(null)
 
-  const setMinCards = (minCards: number) => dispatch(decksSlice.actions.setMinCards(minCards))
-  const setMaxCards = (maxCards: number) => dispatch(decksSlice.actions.setMaxCards(maxCards))
-  const setCurrentTab = (tab: Tab) => dispatch(decksSlice.actions.setCurrentTab(tab))
+  const searchWithDebounce = useDebounce(search)
+
   const setCurrentPage = (page: number) => {
     dispatch(decksSlice.actions.setCurrentPage(page))
   }
   const setPageElementsCount = (page: number) =>
     dispatch(decksSlice.actions.setPageElementsCount(page))
 
-  const resetFilters = () => {
-    dispatch(decksSlice.actions.resetFilters())
-    setRangeValue([0, decks?.maxCardsCount || undefined])
-  }
-
-  const handleSliderCommitted = (value: number[]) => {
-    setMinCards(value[0])
-    setMaxCards(value[1])
-  }
-  const currentUserId = '7bc6df13-ef78-4eed-bced-3423a36b0009'
+  const currentUserId = user?.id
   const authorId = currentTab === 'my' ? currentUserId : undefined
+  const showDeleteModal = !!deckToDeleteId
+  const showEditModal = !!deckToEditId
 
   const { data: decks } = useGetDecksQuery({
     authorId,
@@ -59,7 +55,26 @@ export const DecksPage = () => {
     minCardsCount: minCards,
     currentPage: currentPage,
     itemsPerPage: itemsPerPage,
+    name: searchWithDebounce,
   })
+  const [deleteDeck] = useDeleteDeckMutation()
+  const [updateDeck] = useUpdateDeckMutation()
+
+  const deckToDeleteName = decks?.items?.find(deck => deck.id === deckToDeleteId)?.name
+  const deckToEdit = decks?.items?.find(deck => deck.id === deckToEditId)
+
+  const onConfirmDelete = () => {
+    deleteDeck({ id: deckToDeleteId ?? '' })
+    setDeckToDeleteId(null)
+  }
+
+  const onConfirmEdit = (data: any) => {
+    if (!deckToEditId) {
+      return
+    }
+
+    updateDeck({ id: deckToEditId, ...data })
+  }
 
   if (!decks) {
     return <div>loading...</div>
@@ -67,45 +82,37 @@ export const DecksPage = () => {
 
   return (
     <div className={s.container}>
+      <DeleteDeck
+        name={deckToDeleteName ?? ''}
+        onCancel={() => setDeckToDeleteId(null)}
+        onConfirm={onConfirmDelete}
+        onOpenChange={() => setDeckToDeleteId(null)}
+        open={showDeleteModal}
+        text="Do you really want to remove"
+        deleteText="Delete Pack"
+      />
+      <DecksEdit
+        defaultValues={deckToEdit}
+        key={deckToEditId}
+        onConfirm={onConfirmEdit}
+        onOpenChange={() => setDeckToEditId(null)}
+        open={showEditModal}
+      />
       <div className={s.root}>
-        <div className={s.head}>
-          <Typography.LARGE>Packs list</Typography.LARGE>
-          <Button>Add new deck</Button>
-        </div>
-        <div className={s.filters}>
-          <div className={s.textField}>
-            <TextField placeholder="Search" iconSearch={true} value="" />
-          </div>
-          <div className={s.tabs}>
-            <Typography.Body2>Show packs cards</Typography.Body2>
-            <Tabs
-              onValueChange={value => setCurrentTab(value as Tab)}
-              value={currentTab}
-              tabs={[
-                { value: 'my', title: 'My Cards' },
-                { value: 'all', title: 'All Cards' },
-              ]}
-            />
-          </div>
-          <div className={s.slider}>
-            <Typography.Body2>Number of cards</Typography.Body2>
-            <Slider
-              max={decks?.maxCardsCount || 0}
-              min={0}
-              onValueChange={setRangeValue}
-              onValueCommit={handleSliderCommitted}
-              value={rangeValue as number[]}
-            />
-          </div>
-          <div className={s.button}>
-            <Button variant="secondary" onClick={resetFilters}>
-              <DeleteForever />
-              Clear filters
-            </Button>
-          </div>
-        </div>
+        <DecksPanel
+          decks={decks}
+          currentTab={currentTab}
+          maxCards={maxCards}
+          minCards={minCards}
+          search={search}
+        />
 
-        <TableForDecksPage decks={decks} />
+        <TableForDecksPage
+          decks={decks}
+          currentUserId={currentUserId}
+          onDeleteClick={setDeckToDeleteId}
+          onEditClick={setDeckToEditId}
+        />
 
         <div className={s.paginationContainer}>
           <Pagination

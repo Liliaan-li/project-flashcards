@@ -30,6 +30,16 @@
   display: flex;
   gap: 10px;
   align-items: center;
+
+  a {
+    color: var(--color-light-100);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-dark-100);
+      transition: 0.3s;
+    }
+  }
 }
 
 .deckImage {
@@ -41,4 +51,15 @@
 .options {
   display: flex;
   gap: 10px;
+}
+
+.learn {
+  display: flex;
+}
+
+.edit {
+  cursor: pointer;
+  display: flex;
+  gap: 25px;
+  align-items: center;
 }

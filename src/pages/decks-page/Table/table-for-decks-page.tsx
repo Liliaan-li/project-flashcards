@@ -1,16 +1,34 @@
+import { Link } from 'react-router-dom'
+
 import s from './table-for-decks-page.module.scss'
 
 import { DeleteOutlined } from '@/assets/icons/components/DeleteForever/DeleteOutlined.tsx'
 import Edit from '@/assets/icons/components/edit/edit.tsx'
 import { Play } from '@/assets/icons/components/play/Play.tsx'
+import { Button } from '@/components/ui/button'
 import { Table } from '@/components/ui/table'
 import { DecksResponse } from '@/services/decks'
 
 type TablePropsType = {
   decks: DecksResponse
+  currentUserId: string | undefined
+  onEditClick: (id: string) => void
+  onDeleteClick: (id: string) => void
 }
 
-const TableForDecksPage = ({ decks }: TablePropsType) => {
+const TableForDecksPage = ({
+  decks,
+  currentUserId,
+  onDeleteClick,
+  onEditClick,
+}: TablePropsType) => {
+  const handleDeleteClick = (id: string) => () => onDeleteClick(id)
+  const handleEditClick = (id: string) => () => onEditClick(id)
+
+  if (decks.items.length < 0) {
+    return <div>no card</div>
+  }
+
   return (
     <Table.Root>
       <Table.Head>
@@ -37,17 +55,29 @@ const TableForDecksPage = ({ decks }: TablePropsType) => {
                 ) : (
                   ' '
                 )}
-                {item.name}
+                <Link to={`/decks/${item.id}/cards`}>{item.name}</Link>
               </div>
             </Table.Cell>
             <Table.Cell>{item.cardsCount}</Table.Cell>
             <Table.Cell>{new Date(item.updated).toLocaleString()}</Table.Cell>
             <Table.Cell>{item.author.name}</Table.Cell>
             <Table.Cell>
-              <div className={s.options}>
-                <Play size={16} />
-                <Edit />
-                <DeleteOutlined size={16} />
+              <div className={s.learn}>
+                <div className={s.options}>
+                  {item.cardsCount > 0 && (
+                    <Button as={Link} to={`/decks/${item.id}/learn`} variant="link">
+                      <Play size={16} />
+                    </Button>
+                  )}
+                </div>
+                <div className={s.edit}>
+                  {item.author.id === currentUserId && (
+                    <>
+                      <Edit onClick={handleEditClick(item.id)} />
+                      <DeleteOutlined size={16} onClick={handleDeleteClick(item.id)} />
+                    </>
+                  )}
+                </div>
               </div>
             </Table.Cell>
           </Table.Row>
