@@ -1,0 +1,15 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  width: 100%;
+  padding: 24px;
+}
+
+.button {
+  display: flex;
+  gap: 150px;
+  justify-content: space-between;
+  padding: 20px 25px 25px;
+}

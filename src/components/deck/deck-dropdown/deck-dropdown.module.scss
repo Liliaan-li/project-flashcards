@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  gap: 15px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.drop {
+  cursor: pointer;
+
+  .more {
+    margin: 5px;
+  }
+
+  &:hover {
+    color: var(--color-dark-100);
+    transition: 0.2s;
+  }
+}
