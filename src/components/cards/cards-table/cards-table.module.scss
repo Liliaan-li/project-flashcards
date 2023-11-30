@@ -1,0 +1,52 @@
+.root {
+  word-break: break-all;
+}
+
+.question {
+  width: 30%;
+  text-align: left;
+}
+
+.answer {
+  width: 30%;
+  text-align: left;
+}
+
+.lastUpdated {
+  width: 20%;
+  text-align: left;
+}
+
+.grade {
+  width: 30%;
+  text-align: left;
+}
+
+.nameCell {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.deckImage {
+  width: 100%;
+}
+
+.showText {
+  cursor: pointer;
+  color: var(--color-info-700);
+}
+
+.noCard {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  color: var(--color-dark-100);
+}
+
+.tools {
+  cursor: pointer;
+  display: flex;
+  gap: 15px;
+}
