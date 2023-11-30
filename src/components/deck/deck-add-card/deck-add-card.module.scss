@@ -1,0 +1,10 @@
+.newCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .button {
+    width: 250px;
+    padding: 50px;
+  }
+}
