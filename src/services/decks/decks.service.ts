@@ -1,9 +1,10 @@
 import {
-  CreateDeckArgsType,
   Deck,
+  DeckResponse,
   DecksResponse,
   DeleteDeckArgs,
   GetDecksParams,
+  UpdateDeckArgs,
 } from './decks.types.ts'
 
 import { baseApi } from '@/services/base-api.ts'
@@ -21,7 +22,7 @@ export const DecksService = baseApi.injectEndpoints({
         },
         providesTags: ['Decks'],
       }),
-      createDeck: builder.mutation<Deck, CreateDeckArgsType>({
+      createDeck: builder.mutation<Deck, FormData>({
         query: body => ({
           url: `v1/decks`,
           method: 'POST',
@@ -81,7 +82,20 @@ export const DecksService = baseApi.injectEndpoints({
 
         invalidatesTags: ['Decks'],
       }),
+      updateDeck: builder.mutation<DeckResponse, UpdateDeckArgs>({
+        query: ({ id, ...body }) => ({
+          body,
+          method: 'PATCH',
+          url: `v1/decks/${id}`,
+        }),
+        invalidatesTags: ['Decks'],
+      }),
     }
   },
 })
-export const { useGetDecksQuery, useCreateDeckMutation, useDeleteDeckMutation } = DecksService
+export const {
+  useGetDecksQuery,
+  useCreateDeckMutation,
+  useUpdateDeckMutation,
+  useDeleteDeckMutation,
+} = DecksService

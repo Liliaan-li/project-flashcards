@@ -3,16 +3,19 @@ export type DecksResponse = {
   pagination: Pagination
   items: Deck[]
 }
+
 export type Pagination = {
   totalPages: number
   currentPage: number
   itemsPerPage: number
   totalItems: number
 }
+
 export type Author = {
   id: string
   name: string
 }
+
 export type Deck = {
   id: string
   userId: string
@@ -29,8 +32,11 @@ export type Deck = {
   author: Author
 }
 export type CreateDeckArgsType = Pick<Deck, 'name' | 'cover' | 'isPrivate'>
+
 type Direction = 'asc' | 'desc'
+
 type Field = 'name' | 'rating' | 'created' | 'updated'
+
 export type GetDecksParams = {
   minCardsCount?: number
   maxCardsCount?: number
@@ -44,3 +50,13 @@ export type GetDecksParams = {
 export type Tab = 'all' | 'my'
 
 export type DeleteDeckArgs = Pick<Deck, 'id'>
+
+export type DeckResponse = Deck
+
+export type CreateDeckArgs = {
+  name: string
+  isPrivate?: boolean
+  cover?: string
+}
+
+export type UpdateDeckArgs = Partial<CreateDeckArgs> & { id: Deck['id'] }

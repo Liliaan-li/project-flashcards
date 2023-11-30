@@ -11,6 +11,7 @@ export const decksSlice = createSlice({
     searchByName: '',
     currentPage: 1,
     page: 7,
+    search: '',
   },
   reducers: {
     setSearchByName: (state, action: PayloadAction<string>) => {
@@ -35,6 +36,9 @@ export const decksSlice = createSlice({
       state.currentTab = 'all'
       state.minCards = 0
       state.maxCards = undefined
+    },
+    setSearch: (state, action: PayloadAction<string>) => {
+      state.search = action.payload
     },
   },
 })
