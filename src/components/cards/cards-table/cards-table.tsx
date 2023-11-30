@@ -111,6 +111,7 @@ export const CardsTable = ({
                   {card.answerImg && (
                     <img alt="Card Answer" src={card.answerImg || ''} className={s.deckImage} />
                   )}
+                  <p>{card.answer}</p>
                 </div>
               </ShowMoreText>
             </Table.Cell>
