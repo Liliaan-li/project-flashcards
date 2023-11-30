@@ -1,6 +1,7 @@
 import { ComponentPropsWithoutRef, FC, ReactNode } from 'react'
 
 import * as DialogRadix from '@radix-ui/react-dialog'
+import { clsx } from 'clsx'
 
 import s from './modal.module.scss'
 
@@ -12,12 +13,13 @@ export type ModalProps = {
   onOpenChange: (open: boolean) => void
   open: boolean
   title?: string
+  className?: string
 } & Omit<ComponentPropsWithoutRef<typeof DialogRadix.Dialog>, 'onOpenChange' | 'open'>
 
-export const Modal: FC<ModalProps> = ({ children, title, ...props }) => {
+export const Modal: FC<ModalProps> = ({ children, className, title, ...props }) => {
   const classNames = {
     overlay: s.overlay,
-    content: s.content,
+    content: clsx(s.content, className),
     header: s.header,
     close: s.close,
   }
