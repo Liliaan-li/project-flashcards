@@ -1,0 +1,9 @@
+.container {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+
+  .input {
+    display: none;
+  }
+}
