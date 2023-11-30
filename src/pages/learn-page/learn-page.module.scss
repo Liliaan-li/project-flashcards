@@ -1,0 +1,51 @@
+.root {
+  width: 100%;
+  max-width: 500px;
+  margin: 100px auto;
+  padding: 5px 20px;
+}
+
+.back {
+  cursor: pointer;
+  display: flex;
+  padding: 24px 150px 25px;
+
+  a {
+    text-decoration: none;
+
+    span {
+      padding-top: 11px;
+    }
+  }
+}
+
+.title {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.imgWrapper {
+  width: 100%;
+  max-width: 560px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.shots {
+  margin-bottom: 15px;
+  color: var(--color-dark-100);
+}
+
+.answer {
+  padding: 20px 0;
+}
+
+.grade {
+  padding: 5px 0;
+}
+
+.button {
+  padding: 20px 0;
+}
