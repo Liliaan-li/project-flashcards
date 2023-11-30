@@ -1,46 +1,42 @@
 import { useState } from 'react'
 
-import type { Meta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Modal } from '@/components/ui/modal'
 import { TextField } from '@/components/ui/text-field'
-import { Typography } from '@/components/ui/typography'
 
 const meta = {
   title: 'Components/Modal',
   component: Modal,
   tags: ['autodocs'],
-  argTypes: {
-    variant: {
-      options: ['default', 'learn'],
-      control: { type: 'radio' },
-    },
-  },
 } satisfies Meta<typeof Modal>
 
 export default meta
+type Story = StoryObj<typeof meta>
 
-export const Default = {
-  render: () => {
+export const AddPack: Story = {
+  render: args => {
     const [open, setOpen] = useState(true)
 
     return (
       <>
-        <Modal isOpen={open} onChange={setOpen} title="Add New Pack">
-          <TextField label="Name Pack" />
-          <Checkbox checked={open} onChange={setOpen} />
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              paddingTop: '30px',
-              gap: '10px',
-            }}
-          >
-            <Button variant="secondary">Cancel</Button>
-            <Button>Add New Pack</Button>
+        <Modal {...args} title="Add New Pack" onOpenChange={setOpen} open={open}>
+          <div style={{ padding: '20px' }}>
+            <TextField value="" label="Name Pack" />
+            <Checkbox onChange={() => {}} label="Private" />
+            <div
+              style={{
+                display: 'flex',
+                gap: '150px',
+                justifyContent: 'space-between',
+                padding: '20px 0 25px',
+              }}
+            >
+              <Button variant="secondary">Cancel</Button>
+              <Button>Add New Pack</Button>
+            </div>
           </div>
         </Modal>
       </>
@@ -48,23 +44,29 @@ export const Default = {
   },
 }
 
-export const Learn = {
-  render: () => {
+export const DeletePack: Story = {
+  render: args => {
     const [open, setOpen] = useState(true)
 
     return (
       <>
-        <Modal isOpen={open} onChange={setOpen} title="Add New Pack" variant="learn">
-          <div style={{ display: 'flex', marginTop: '45px' }}>
-            <Typography.Subtitle1>Question</Typography.Subtitle1>
-            <Typography.Body1>: How This works in JavaScript?</Typography.Body1>
-          </div>
-          <div style={{ display: 'flex', color: '#808080' }}>
-            <Typography.Body2>Количество попыток ответов на вопрос: </Typography.Body2>
-            <Typography.Subtitle2>10</Typography.Subtitle2>
-          </div>
-          <div style={{ marginTop: '41px' }}>
-            <Button>Show Answer</Button>
+        <Modal {...args} title="Delete Deck" onOpenChange={setOpen} open={open}>
+          <div style={{ padding: '20px' }}>
+            <p>
+              Do you really want to remove <span>123</span>?
+            </p>
+            <p>All cards will be deleted.</p>
+            <div
+              style={{
+                display: 'flex',
+                gap: '150px',
+                justifyContent: 'space-between',
+                padding: '20px 0 25px',
+              }}
+            >
+              <Button variant="secondary">Cancel</Button>
+              <Button>Add New Pack</Button>
+            </div>
           </div>
         </Modal>
       </>

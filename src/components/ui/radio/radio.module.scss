@@ -13,8 +13,7 @@
 
 .label {
   display: flex;
-  gap: 2px;
-  align-items: center;
+  gap: 10px;
 
   > label {
     cursor: pointer;
@@ -22,6 +21,10 @@
     [data-disabled] & {
       cursor: default;
     }
+  }
+
+  p {
+    padding: 7px 0;
   }
 }
 
@@ -59,8 +62,8 @@
     transition: 100ms background-color;
 
     [data-state='checked'] & {
-      width: 9px;
-      height: 9px;
+      width: 10px;
+      height: 10px;
       background-color: var(--color-accent-500);
     }
   }
