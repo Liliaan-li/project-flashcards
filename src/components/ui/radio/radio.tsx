@@ -1,4 +1,4 @@
-import { ElementRef, forwardRef } from 'react'
+import { ComponentPropsWithoutRef, ElementRef, forwardRef } from 'react'
 
 import * as RadioRadix from '@radix-ui/react-radio-group'
 import { clsx } from 'clsx'
@@ -12,12 +12,14 @@ type Option = {
   value: string
 }
 
-type RadioProps = {
+type RadioProp = {
   options: Option[]
   errorMessage?: string
   className?: string
   disabled?: boolean
 }
+
+export type RadioProps = RadioProp & ComponentPropsWithoutRef<typeof RadioRadix.Root>
 
 export const Radio = forwardRef<ElementRef<typeof RadioRadix.Root>, RadioProps>((props, ref) => {
   const { options, errorMessage, disabled, className, ...rest } = props
@@ -27,7 +29,7 @@ export const Radio = forwardRef<ElementRef<typeof RadioRadix.Root>, RadioProps>(
   }
 
   return (
-    <RadioRadix.Root className={classNames.root} {...rest} ref={ref} disabled={disabled}>
+    <RadioRadix.Root className={classNames.root} ref={ref} disabled={disabled} {...rest}>
       {options.map(option => (
         <div className={s.label} key={option.value}>
           <RadioRadix.Item value={option.value} className={classNames.item}>
