@@ -1,0 +1,19 @@
+.active {
+  cursor: pointer;
+  transition: 0.4s;
+
+  &:hover {
+    background-color: var(--color-dark-100);
+  }
+}
+
+.sort {
+  position: relative;
+}
+
+.sortIcon {
+  position: absolute;
+  top: 50%;
+  right: -15px;
+  transform: translateY(-50%);
+}
