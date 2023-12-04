@@ -64,19 +64,13 @@ export const authService = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Me'],
     }),
-    changeUserName: builder.mutation<User, string>({
-      query: name => ({
+
+    editUserInfo: builder.mutation<User, FormData>({
+      query: body => ({
         url: '/v1/auth/me',
         method: 'PATCH',
-        body: { name },
-      }),
-      invalidatesTags: ['Me'],
-    }),
-    changeUserAvatar: builder.mutation<User, string>({
-      query: avatar => ({
-        url: '/v1/auth/me',
-        method: 'PATCH',
-        body: { avatar },
+        body,
+        formData: true,
       }),
       invalidatesTags: ['Me'],
     }),
@@ -90,5 +84,5 @@ export const {
   useRecoverPasswordMutation,
   useCreateNewPasswordMutation,
   useSignUpMutation,
-  useChangeUserNameMutation,
+  useEditUserInfoMutation,
 } = authService

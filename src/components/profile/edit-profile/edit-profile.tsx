@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 import s from './edit-profile.module.scss'
 
-import Camera from '@/assets/icons/components/camera/camera'
 import Edit from '@/assets/icons/components/edit/edit'
 import { LogoutIcon } from '@/assets/icons/components/logout/logout-icon'
+import { InputTypeFile } from '@/components/profile/input-type-file/input-type-file.tsx'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { TextField } from '@/components/ui/text-field'
@@ -15,26 +15,20 @@ type Props = {
   avatar: string
   name: string
   onLogout: () => void
-  onAvatarChange: (newAvatar: string) => void
-  onNameChange: (newName: string) => void
+  onHandleEditUserInfo: (newAvatar: FormData) => void
 }
 
-export const EditProfile = ({
-  avatar,
-  email,
-  name,
-  onAvatarChange,
-  onNameChange,
-  onLogout,
-}: Props) => {
+export const EditProfile = ({ avatar, email, name, onHandleEditUserInfo, onLogout }: Props) => {
   const [editMode, setEditMode] = useState(false)
   const [nameValue, setNameValue] = useState(name)
 
-  const handleAvatarChanged = () => {
-    onAvatarChange('new Avatar')
-  }
-  const handleNameChanged = () => {
-    onNameChange(nameValue)
+  const handleNameChanged = (file?: File) => {
+    const formData = new FormData()
+
+    formData.append('name', nameValue)
+    file && formData.append('avatar', file)
+    onHandleEditUserInfo(formData)
+
     setEditMode(false)
   }
   const handleLogout = () => {
@@ -47,14 +41,9 @@ export const EditProfile = ({
         Personal Information
       </Typography.LARGE>
       <div className={s.photoContainer}>
-        <div>
-          <img src={avatar} alt={'avatar'} />
-          <button className={s.editAvatarButton} onClick={handleAvatarChanged}>
-            <input type="file" />
-            <Camera />
-          </button>
-        </div>
+        <InputTypeFile avatar={avatar} onAvatarChange={newAvatar => handleNameChanged(newAvatar)} />
       </div>
+
       {editMode ? (
         <div>
           <TextField
@@ -64,7 +53,7 @@ export const EditProfile = ({
             autoFocus
             style={{ marginBottom: '1.7px' }}
           />
-          <Button onClick={handleNameChanged}>Save changes</Button>
+          <Button onClick={() => handleNameChanged()}>Save changes</Button>
         </div>
       ) : (
         <div>

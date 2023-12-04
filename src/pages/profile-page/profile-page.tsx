@@ -1,7 +1,8 @@
+import { defaultAva } from '@/assets/avatar/defaultAva.ts'
 import { EditProfile } from '@/components/profile/edit-profile'
 import { Header } from '@/components/ui/header'
 import {
-  useChangeUserNameMutation,
+  useEditUserInfoMutation,
   useLogoutMutation,
   useMeQuery,
 } from '@/services/auth/auth.service.ts'
@@ -9,8 +10,7 @@ import {
 export const ProfilePage = () => {
   const { data } = useMeQuery()
   const [logout] = useLogoutMutation()
-  const [changeUserName] = useChangeUserNameMutation()
-
+  const [editUser] = useEditUserInfoMutation()
   const isAuthenticated = !!data
 
   if (!data) {
@@ -31,16 +31,11 @@ export const ProfilePage = () => {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2%' }}>
         <EditProfile
           email={data.email}
-          avatar={
-            data.avatar === null
-              ? 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg'
-              : data.avatar
-          }
+          avatar={data.avatar === null ? defaultAva : data.avatar}
           name={data.name}
           onLogout={logout}
-          onAvatarChange={() => {}}
-          onNameChange={name => {
-            changeUserName(name)
+          onHandleEditUserInfo={data => {
+            editUser(data)
           }}
         />
       </div>

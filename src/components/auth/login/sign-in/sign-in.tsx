@@ -13,12 +13,12 @@ import className from '@/components/ui/typography/typography.module.scss'
 const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, 'Password must be at least 8 character'),
-  // rememberMe: z.boolean().default(false),
-  rememberMe: z.literal(true, {
-    errorMap: () => ({
-      message: 'Please check the box',
-    }),
-  }),
+  rememberMe: z.boolean().default(false),
+  // rememberMe: z.literal(true, {
+  //   errorMap: () => ({
+  //     message: 'Please check the box',
+  //   }),
+  // }),
 })
 
 type FormValues = z.infer<typeof loginSchema>
