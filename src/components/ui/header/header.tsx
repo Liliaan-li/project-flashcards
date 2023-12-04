@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 import s from './header.module.scss'
 
+import { defaultAva } from '@/assets/avatar/defaultAva.ts'
 import { Logo } from '@/assets/icons/components/logo/Logo.tsx'
 import { LogoutIcon } from '@/assets/icons/components/logout/logout-icon.tsx'
 import { Person } from '@/assets/icons/components/person/person.tsx'
@@ -39,25 +40,20 @@ export const Header = ({ isAuth, userInfo, onSignOut }: HeaderProps) => {
                     {userInfo?.name}
                   </Typography.Subtitle1>
                   <Avatar
-                    src={
-                      userInfo?.avatar === null
-                        ? 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg'
-                        : userInfo?.avatar
-                    }
+                    src={userInfo?.avatar === null ? defaultAva : userInfo?.avatar}
                     name={userInfo?.name}
                   />
                 </button>
               }
             >
-              <ToolbarItem onSelect={() => {}} className={s.userInfo}>
+              <ToolbarItem
+                onSelect={() => {
+                  navigate('/profile')
+                }}
+                className={s.userInfo}
+              >
                 <div className={s.userInfoContainer}>
-                  <Avatar
-                    src={
-                      userInfo?.avatar === null
-                        ? 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg'
-                        : userInfo?.avatar
-                    }
-                  />
+                  <Avatar src={userInfo?.avatar === null ? defaultAva : userInfo?.avatar} />
                   <div className={s.userDetails}>
                     <Typography.Subtitle2>{userInfo?.name}</Typography.Subtitle2>
                     <Typography.Caption style={{ color: 'var(--color-dark-100)' }}>
