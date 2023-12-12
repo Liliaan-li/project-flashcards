@@ -1,5 +1,6 @@
 import { FC, useState } from 'react'
 
+import { Toaster } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 
 import s from './deck-header.module.scss'
@@ -14,6 +15,7 @@ import { selectCardsSearch } from '@/services/cards/cards.selectors.ts'
 import { cardsSlice } from '@/services/cards/cards.slice.ts'
 import { Deck, useDeleteDeckMutation, useUpdateDeckMutation } from '@/services/decks'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
+import { errorToast, successToast } from '@/utils/toasts/toasts.ts'
 
 type DeckHeaderProps = {
   isOwner: boolean
@@ -56,11 +58,17 @@ export const DeckHeader: FC<DeckHeaderProps> = ({
 
   const onConfirmDelete = () => {
     deleteDeck({ id: deckDeleteId ?? '' })
+      .unwrap()
+      .then(() => successToast(`Deck was successfully deleted`))
+      .catch(error => errorToast(error.data.message))
     setDeckDeleteId(null)
   }
 
   const onConfirmEdit = (data: any) => {
     updateDeck({ id: deckEditId, ...data })
+      .unwrap()
+      .then(() => successToast(`Deck info was successfully changed`))
+      .catch(error => errorToast(error.data.message))
     setDeckEditId(null)
   }
 
@@ -116,6 +124,7 @@ export const DeckHeader: FC<DeckHeaderProps> = ({
       <div className={s.input}>
         <TextField onChangeValue={setSearch} placeholder="Search..." iconSearch value={search} />
       </div>
+      <Toaster />
     </div>
   )
 }

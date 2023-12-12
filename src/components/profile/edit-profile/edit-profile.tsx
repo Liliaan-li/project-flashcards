@@ -48,6 +48,7 @@ export const EditProfile = ({ avatar, email, name, onHandleEditUserInfo, onLogou
         <div>
           <TextField
             label={'Nickname'}
+            defaultValue={nameValue}
             value={nameValue}
             onChange={e => setNameValue(e.currentTarget.value)}
             autoFocus

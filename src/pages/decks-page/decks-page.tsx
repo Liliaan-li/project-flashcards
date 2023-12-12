@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { CircleLoader } from 'react-spinners'
+
 import s from './decks-page.module.scss'
 
 import { DecksEdit } from '@/components/deck/deck-edit/decks-edit.tsx'
@@ -20,6 +22,7 @@ import {
 } from '@/services/decks/decks.selectors.ts'
 import { decksSlice } from '@/services/decks/decks.slice.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
+import { errorToast, successToast } from '@/utils/toasts/toasts.ts'
 
 export const DecksPage = () => {
   const dispatch = useAppDispatch()
@@ -65,6 +68,9 @@ export const DecksPage = () => {
 
   const onConfirmDelete = () => {
     deleteDeck({ id: deckToDeleteId ?? '' })
+      .unwrap()
+      .then(() => successToast(`Pack was successfully deleted`))
+      .catch(error => errorToast(error.data.message))
     setDeckToDeleteId(null)
   }
 
@@ -74,10 +80,23 @@ export const DecksPage = () => {
     }
 
     updateDeck({ id: deckToEditId, ...data })
+      .unwrap()
+      .then(() => successToast(`Deck info was successfully changed`))
+      .catch(error => errorToast(error.data.message))
   }
 
   if (!decks) {
-    return <div>loading...</div>
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+        }}
+      >
+        <CircleLoader color="var(--color-accent-300)" size={100} />
+      </div>
+    )
   }
 
   return (

@@ -1,18 +1,25 @@
+import { Toaster } from 'react-hot-toast'
 import { Navigate } from 'react-router-dom'
+import { BarLoader } from 'react-spinners'
 
 import { SignUp } from '@/components/auth/login/sign-up'
 import { Header } from '@/components/ui/header'
 import { useSignUpMutation } from '@/services/auth/auth.service.ts'
+import { errorToast } from '@/utils/toasts/toasts.ts'
 
 export const SignUpPage = () => {
   const [signUp, { status }] = useSignUpMutation()
 
-  if (status === 'pending' || status === 'rejected') return <div>Loading...</div>
   if (status === 'fulfilled') return <Navigate to="/login" replace={true} />
 
   return (
     <>
       <Header isAuth={false} />
+      {status === 'pending' && (
+        <div>
+          <BarLoader color="var(--color-accent-300)" width={'100%'} />
+        </div>
+      )}
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2%' }}>
         <SignUp
           onSubmit={data =>
@@ -23,8 +30,11 @@ export const SignUpPage = () => {
               subject: 'Confirm sign up',
               sendConfirmationEmail: false,
             })
+              .unwrap()
+              .catch(error => errorToast(error.data.errorMessages[0]))
           }
         />
+        <Toaster />
       </div>
     </>
   )

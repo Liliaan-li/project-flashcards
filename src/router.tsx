@@ -5,6 +5,7 @@ import {
   RouteObject,
   RouterProvider,
 } from 'react-router-dom'
+import { CircleLoader } from 'react-spinners'
 
 import { SignInPage } from '@/pages'
 import { DeckPage } from '@/pages/deck-page/deck-page.tsx'
@@ -13,6 +14,7 @@ import CheckEmailPage from '@/pages/forgot-pages/check-email-page/check-email-pa
 import { CreateNewPasswordPage } from '@/pages/forgot-pages/create-new-password-page'
 import { ForgotPasswordPage } from '@/pages/forgot-pages/forgot-password-page/forgot-password-page.tsx'
 import { LearnPage } from '@/pages/learn-page/learn-page.tsx'
+import Page404 from '@/pages/page-404/404.tsx'
 import { ProfilePage } from '@/pages/profile-page'
 import { SignUpPage } from '@/pages/sign-up-page'
 import { useMeQuery } from '@/services/auth/auth.service.ts'
@@ -59,6 +61,7 @@ const privateRoutes: RouteObject[] = [
     path: '/decks/:id/cards',
   },
   { element: <LearnPage />, path: `/decks/:id/learn` },
+  { element: <Page404 />, path: `/*` },
 ]
 
 const router = createBrowserRouter([
@@ -81,7 +84,18 @@ function PrivateRoutes() {
   const { isError, isLoading } = useMeQuery()
   const isAuthenticated = !isError
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading)
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+        }}
+      >
+        <CircleLoader color="var(--color-accent-300)" size={100} />
+      </div>
+    )
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
 }

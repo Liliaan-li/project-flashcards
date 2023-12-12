@@ -65,7 +65,7 @@ export const Empty: FC<ComponentProps<'div'> & { mt?: string; mb?: string }> = (
 
   return (
     <Typography.H2 className={classNames.empty} style={{ marginTop: mt, marginBottom: mb }}>
-      Пока тут еще нет данных! :(
+      This pack is empty.
     </Typography.H2>
   )
 }

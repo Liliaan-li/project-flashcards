@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
+import { Toaster } from 'react-hot-toast'
 import { Link, useParams } from 'react-router-dom'
+import { BarLoader } from 'react-spinners'
 
 import s from './deck-page.module.scss'
 
@@ -25,6 +27,7 @@ import { cardsSlice } from '@/services/cards/cards.slice.ts'
 import { Sort } from '@/services/cards/cards.types.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { createSort } from '@/utils/create-sort/create-sort.ts'
+import { errorToast, successToast } from '@/utils/toasts/toasts.ts'
 
 export const DeckPage = () => {
   const dispatch = useAppDispatch()
@@ -58,15 +61,17 @@ export const DeckPage = () => {
 
   const onSubmitCreate = (body: FormData) => {
     createCard({ id, body })
+      .unwrap()
+      .then(() => successToast(`Card was successfully created`))
+      .catch(error => errorToast(error.data.message))
   }
 
   const onSubmitDelete = () => {
     deleteCard({ cardId: cardDeleteId ?? '', deckId: id })
+      .unwrap()
+      .then(() => successToast(`Card was successfully deleted`))
+      .catch(error => errorToast(error.data.message))
     setCardDeleteId(null)
-  }
-
-  if (isLoading) {
-    return <div>Loading...</div>
   }
 
   return (
@@ -79,6 +84,11 @@ export const DeckPage = () => {
           email: data!.email,
         }}
       />
+      {isLoading && (
+        <div>
+          <BarLoader color="var(--color-accent-300)" width={'100%'} />
+        </div>
+      )}
       <div className={s.container}>
         <DeleteDeck
           name={cardDelete ?? ''}
@@ -130,6 +140,7 @@ export const DeckPage = () => {
         />
         {!isOwner && !isEmptyCard && !isLoading && <Table.Empty />}
       </div>
+      <Toaster />
     </>
   )
 }
