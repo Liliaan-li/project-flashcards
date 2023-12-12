@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { Toaster } from 'react-hot-toast'
 import ShowMoreText from 'react-show-more-text'
 
 import s from './cards-table.module.scss'
@@ -12,6 +13,7 @@ import { Rating } from '@/components/ui/rating'
 import { Table } from '@/components/ui/table'
 import { useUpdateCardMutation } from '@/services/cards/cards.service.ts'
 import { Card, Sort } from '@/services/cards/cards.types.ts'
+import { errorToast, successToast } from '@/utils/toasts/toasts.ts'
 
 type Props = {
   cards: Card[] | undefined
@@ -82,63 +84,69 @@ export const CardsTable = ({
 
   const onSubmit = (body: FormData, id: string) => {
     updateCard({ cardId: id ?? '', body, deckId: id })
+      .unwrap()
+      .then(() => successToast(`Card info was successfully changed`))
+      .catch(error => errorToast(error.data.message))
   }
 
   return (
-    <div className={s.root}>
-      <CardsSort columns={getCardsHeaderColumns(isOwner)} sort={sort} onSort={onChangeSort} />
-      <Table.Body>
-        {cards?.map(card => (
-          <Table.Row key={card.id}>
-            <Table.Cell>
-              <div className={s.nameCell}>
-                {card.questionImg && (
-                  <img alt="Card Question" src={card.questionImg || ''} className={s.deckImage} />
-                )}
-                <p>{card.question}</p>
-              </div>
-            </Table.Cell>
-            <Table.Cell>
-              <ShowMoreText
-                lines={1}
-                more="Show more"
-                less="...Show less"
-                onClick={() => setShowButton(!showButton)}
-                width={-1}
-                anchorClass={s.showText}
-              >
-                <div>
-                  {card.answerImg && (
-                    <img alt="Card Answer" src={card.answerImg || ''} className={s.deckImage} />
-                  )}
-                  <p>{card.answer}</p>
-                </div>
-              </ShowMoreText>
-            </Table.Cell>
-            <Table.Cell>{new Date(card.updated).toLocaleString()}</Table.Cell>
-            <Table.Cell>
-              <Rating rating={card.grade} size={25} />
-            </Table.Cell>
-            {isOwner && (
+    <>
+      <Table.Root className={s.root}>
+        <CardsSort columns={getCardsHeaderColumns(isOwner)} sort={sort} onSort={onChangeSort} />
+        <Table.Body>
+          {cards?.map(card => (
+            <Table.Row key={card.id}>
               <Table.Cell>
-                <div className={s.tools}>
-                  <Edit onClick={openEditModal} />
-                  <CardForm
-                    options={options}
-                    onSubmit={body => onSubmit(body, card.id)}
-                    onCancel={() => setShowEditModal(false)}
-                    onOpenChange={setShowEditModal}
-                    open={showEditModal}
-                    buttonText="Save Changes"
-                    title="Edit Card"
-                  />
-                  <DeleteOutlined size={16} onClick={() => onDeleteClick(card.id)} />
+                <div className={s.nameCell}>
+                  {card.questionImg && (
+                    <img alt="Card Question" src={card.questionImg || ''} className={s.deckImage} />
+                  )}
+                  <p>{card.question}</p>
                 </div>
               </Table.Cell>
-            )}
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </div>
+              <Table.Cell>
+                <ShowMoreText
+                  lines={1}
+                  more="Show more"
+                  less="...Show less"
+                  onClick={() => setShowButton(!showButton)}
+                  width={-1}
+                  anchorClass={s.showText}
+                >
+                  <div>
+                    {card.answerImg && (
+                      <img alt="Card Answer" src={card.answerImg || ''} className={s.deckImage} />
+                    )}
+                    <p>{card.answer}</p>
+                  </div>
+                </ShowMoreText>
+              </Table.Cell>
+              <Table.Cell>{new Date(card.updated).toLocaleString()}</Table.Cell>
+              <Table.Cell>
+                <Rating rating={card.grade} size={25} />
+              </Table.Cell>
+              {isOwner && (
+                <Table.Cell>
+                  <div className={s.tools}>
+                    <Edit onClick={openEditModal} />
+                    <CardForm
+                      options={options}
+                      onSubmit={body => onSubmit(body, card.id)}
+                      onCancel={() => setShowEditModal(false)}
+                      onOpenChange={setShowEditModal}
+                      open={showEditModal}
+                      buttonText="Save Changes"
+                      title="Edit Card"
+                    />
+                    <DeleteOutlined size={16} onClick={() => onDeleteClick(card.id)} />
+                  </div>
+                </Table.Cell>
+              )}
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table.Root>
+      <Toaster />
+    </>
   )
 }

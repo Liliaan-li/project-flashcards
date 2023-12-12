@@ -1,5 +1,7 @@
 import { FC, useState } from 'react'
 
+import { Toaster } from 'react-hot-toast'
+
 import s from './decks-panel.module.scss'
 
 import DeleteForever from '@/assets/icons/components/DeleteForever/DeleteForever.tsx'
@@ -12,6 +14,7 @@ import { Typography } from '@/components/ui/typography'
 import { DecksResponse, Tab, useCreateDeckMutation } from '@/services/decks'
 import { decksSlice } from '@/services/decks/decks.slice.ts'
 import { useAppDispatch } from '@/services/store.ts'
+import { errorToast, successToast } from '@/utils/toasts/toasts.ts'
 
 type DecksPanelProps = {
   decks: DecksResponse
@@ -54,6 +57,9 @@ export const DecksPanel: FC<DecksPanelProps> = ({
 
   const onSubmitCreate = (data: FormData) => {
     createDeck(data)
+      .unwrap()
+      .then(res => successToast(`Pack ${JSON.stringify(res.name)} was successfully created`))
+      .catch(error => errorToast(error.data.message))
   }
 
   return (
@@ -100,6 +106,7 @@ export const DecksPanel: FC<DecksPanelProps> = ({
           </Button>
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }

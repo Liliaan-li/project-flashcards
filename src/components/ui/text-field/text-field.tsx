@@ -11,7 +11,7 @@ import { Search } from '@/assets/icons/components/search/search-icon.tsx'
 import { Typography } from '@/components/ui/typography/typography.tsx'
 
 export type TextFieldProps = {
-  value: string
+  value?: string
   label?: ReactNode
   errorMessage?: string
   iconEnd?: boolean
@@ -67,7 +67,7 @@ export const TextField = /* @__PURE__ */ forwardRef<HTMLInputElement, TextFieldP
     const dataIconEnd = iconEnd ? 'end' : ''
     const dataIcon = dataIconStart + dataIconEnd
 
-    const inputClass = `${classNames.input} ${value?.length > 0 ? classNames.activeInput : ''}`
+    const inputClass = `${classNames.input} ${value?.length! > 0 ? classNames.activeInput : ''}`
 
     return (
       <div className={classNames.root}>
@@ -89,7 +89,6 @@ export const TextField = /* @__PURE__ */ forwardRef<HTMLInputElement, TextFieldP
               data-icon={dataIcon}
               onChange={handleChange}
               disabled={disabled}
-              value={value}
               {...rest}
             />
             {isShowClearButton && (

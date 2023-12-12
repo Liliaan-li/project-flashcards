@@ -1,5 +1,7 @@
 import { ChangeEvent, useRef, useState } from 'react'
 
+import { toast, Toaster } from 'react-hot-toast'
+
 import { defaultAva } from '@/assets/avatar/defaultAva.ts'
 import Edit from '@/assets/icons/components/edit/edit.tsx'
 import s from '@/components/profile/edit-profile/edit-profile.module.scss'
@@ -11,7 +13,6 @@ type InputTypeFilePropsType = {
 
 export const InputTypeFile = ({ avatar, onAvatarChange }: InputTypeFilePropsType) => {
   const inputRef = useRef<HTMLInputElement>(null)
-
   const selectFileHandler = () => {
     inputRef && inputRef.current?.click()
   }
@@ -24,7 +25,7 @@ export const InputTypeFile = ({ avatar, onAvatarChange }: InputTypeFilePropsType
       if (file.size < 4000000) {
         onAvatarChange(file)
       } else {
-        console.error('Error: ', 'Файл слишком большого размера')
+        toast('The size of file is too large. Size should be less than 4.5MB')
       }
     }
   }
@@ -56,6 +57,7 @@ export const InputTypeFile = ({ avatar, onAvatarChange }: InputTypeFilePropsType
         <Edit />
       </button>
       <input style={{ display: 'none' }} ref={inputRef} type="file" onChange={uploadHandler} />
+      <Toaster />
     </div>
   )
 }

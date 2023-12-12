@@ -6,6 +6,7 @@ import {
   useLogoutMutation,
   useMeQuery,
 } from '@/services/auth/auth.service.ts'
+import { errorToast } from '@/utils/toasts/toasts.ts'
 
 export const ProfilePage = () => {
   const { data } = useMeQuery()
@@ -36,6 +37,8 @@ export const ProfilePage = () => {
           onLogout={logout}
           onHandleEditUserInfo={data => {
             editUser(data)
+              .unwrap()
+              .catch(error => errorToast(error.data.message))
           }}
         />
       </div>

@@ -51,7 +51,9 @@ const TableForDecksPage = ({
             <Table.Cell>
               <div className={s.nameCell}>
                 {item.cover !== null ? (
-                  <img alt={item.name} src={item.cover} className={s.deckImage} />
+                  <Link to={`/decks/${item.id}/cards`}>
+                    <img alt={item.name} src={item.cover} className={s.deckImage} />
+                  </Link>
                 ) : (
                   ' '
                 )}
