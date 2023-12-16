@@ -25,6 +25,7 @@ import {
 } from '@/services/cards/cards.service.ts'
 import { cardsSlice } from '@/services/cards/cards.slice.ts'
 import { Sort } from '@/services/cards/cards.types.ts'
+import { useGetDecksQuery } from '@/services/decks'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { createSort } from '@/utils/create-sort/create-sort.ts'
 import { errorToast, successToast } from '@/utils/toasts/toasts.ts'
@@ -46,6 +47,7 @@ export const DeckPage = () => {
 
   const [createCard] = useCreateCardMutation()
   const { data: deckData } = useGetDeckQuery({ id: id || '' })
+  const { data: decks } = useGetDecksQuery()
   const [deleteCard] = useDeleteCardMutation()
   const { data } = useMeQuery()
   const { data: cardsData, isLoading } = useGetCardsQuery({
@@ -62,14 +64,20 @@ export const DeckPage = () => {
   const onSubmitCreate = (body: FormData) => {
     createCard({ id, body })
       .unwrap()
-      .then(() => successToast(`Card was successfully created`))
+      .then(() => {
+        successToast(`Card was successfully created`)
+        window.location.reload()
+      })
       .catch(error => errorToast(error.data.message))
   }
 
   const onSubmitDelete = () => {
     deleteCard({ cardId: cardDeleteId ?? '', deckId: id })
       .unwrap()
-      .then(() => successToast(`Card was successfully deleted`))
+      .then(() => {
+        successToast(`Card was successfully deleted`)
+        window.location.reload()
+      })
       .catch(error => errorToast(error.data.message))
     setCardDeleteId(null)
   }
@@ -118,6 +126,7 @@ export const DeckPage = () => {
               isOwner={isOwner}
               isEmptyCard={isEmptyCard!}
               onSubmitCreate={onSubmitCreate}
+              decksData={decks}
             />
             <CardsTable
               cards={cardsData?.items}
