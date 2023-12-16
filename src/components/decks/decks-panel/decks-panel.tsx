@@ -66,7 +66,7 @@ export const DecksPanel: FC<DecksPanelProps> = ({
     <div>
       <div className={s.head}>
         <Typography.LARGE>Packs list</Typography.LARGE>
-        <Button onClick={openCreateModal}>Add new deck</Button>
+        <Button onClick={openCreateModal}>Add New Pack</Button>
         <AddDeck
           onCancel={() => setShowCreateModal(false)}
           onSubmit={onSubmitCreate}
