@@ -52,6 +52,7 @@ export const CardForm: FC<Props> = ({
     handleSubmit,
     watch,
     setValue,
+    reset,
   } = useCardForm({
     answer: cardValues?.answer || '',
     question: cardValues?.question || '',
@@ -92,6 +93,7 @@ export const CardForm: FC<Props> = ({
     onSubmit(formData)
 
     onCancel?.()
+    reset()
   })
 
   const onLoadQuestionCover = (data: File) => {
@@ -105,6 +107,7 @@ export const CardForm: FC<Props> = ({
   }
 
   const cancel = () => {
+    reset()
     onCancel?.()
   }
 
@@ -117,38 +120,47 @@ export const CardForm: FC<Props> = ({
           name={'questionFormat' || 'answerFormat'}
           label="Choose an question format"
         />
-
-        <ControlledTextField control={control} label="Question" name="question" />
+        {questionFormat === 'Text' && (
+          <div className={s.input}>
+            <ControlledTextField control={control} label="Question" name="question" />
+          </div>
+        )}
         {questionFormat === 'Picture' && (
-          <>
+          <div className={s.questionFormat}>
+            <Typography.Subtitle2 className={s.subtitle}>Question:</Typography.Subtitle2>
             {questionImageUrl && (
               <div className={s.image}>
                 <img src={questionImageUrl} alt="Card cover" />
               </div>
             )}
-            <UploadImage onLoadCover={onLoadQuestionCover}>
-              <Button className={s.uploadButton} variant="secondary" type="button">
+            <UploadImage onLoadCover={onLoadQuestionCover} className={s.uploadButton}>
+              <Button variant="secondary" type="button">
                 <ImageCover size={16} />
                 <Typography.Subtitle2>Add Cover</Typography.Subtitle2>
               </Button>
             </UploadImage>
-          </>
+          </div>
         )}
-        <ControlledTextField control={control} label="Answer" name="answer" />
+        {questionFormat === 'Text' && (
+          <div>
+            <ControlledTextField control={control} label="Answer" name="answer" />
+          </div>
+        )}
         {questionFormat === 'Picture' && (
-          <>
+          <div className={s.questionFormat}>
+            <Typography.Subtitle2 className={s.subtitle}>Answer:</Typography.Subtitle2>
             {answerImageUrl && (
               <div className={s.image}>
                 <img src={answerImageUrl} alt="Card cover" />
               </div>
             )}
-            <UploadImage onLoadCover={onLoadAnswerCover}>
-              <Button className={s.uploadButton} variant="secondary" type="button">
+            <UploadImage onLoadCover={onLoadAnswerCover} className={s.uploadButton}>
+              <Button variant="secondary" type="button">
                 <ImageCover size={16} />
                 <Typography.Subtitle2>Add Cover</Typography.Subtitle2>
               </Button>
             </UploadImage>
-          </>
+          </div>
         )}
         <div className={s.button}>
           <Button variant="secondary" onClick={cancel}>
