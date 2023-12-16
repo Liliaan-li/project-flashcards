@@ -8,14 +8,11 @@ import { useLoginMutation, useMeQuery } from '@/services/auth/auth.service.ts'
 import { errorToast } from '@/utils/toasts/toasts.ts'
 
 export const SignInPage = () => {
-  const [logIn, { isError }] = useLoginMutation()
+  const [logIn] = useLoginMutation()
   const { isLoading, data } = useMeQuery()
   const isAuthenticated = !!data
 
   if (isAuthenticated) return <Navigate to="/" replace={true} />
-  if (isError) {
-    errorToast('Invalid credentials')
-  }
 
   return (
     <>
@@ -26,7 +23,13 @@ export const SignInPage = () => {
         </div>
       )}
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2%' }}>
-        <SignIn onSubmit={logIn} />
+        <SignIn
+          onSubmit={data =>
+            logIn(data)
+              .unwrap()
+              .catch(error => errorToast(error.data.message))
+          }
+        />
       </div>
       <Toaster />
     </>
