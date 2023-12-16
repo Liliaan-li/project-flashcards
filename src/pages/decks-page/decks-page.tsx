@@ -111,6 +111,7 @@ export const DecksPage = () => {
         deleteText="Delete Pack"
       />
       <DecksEdit
+        title="Edit Pack"
         defaultValues={deckToEdit}
         key={deckToEditId}
         onConfirm={onConfirmEdit}
