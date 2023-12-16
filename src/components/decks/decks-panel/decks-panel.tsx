@@ -59,7 +59,7 @@ export const DecksPanel: FC<DecksPanelProps> = ({
     createDeck(data)
       .unwrap()
       .then(res => successToast(`Pack ${JSON.stringify(res.name)} was successfully created`))
-      .catch(error => errorToast(error.data.message))
+      .catch(error => errorToast(error.data.errorMessages[0].message))
   }
 
   return (

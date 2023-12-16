@@ -89,7 +89,7 @@ export const CardsTable = ({
         successToast(`Card info was successfully changed`)
         window.location.reload()
       })
-      .catch(error => errorToast(error.data.message))
+      .catch(() => errorToast(error.data.errorMessages[0].message))
   }
 
   return (

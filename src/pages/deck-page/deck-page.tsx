@@ -68,7 +68,7 @@ export const DeckPage = () => {
         successToast(`Card was successfully created`)
         window.location.reload()
       })
-      .catch(error => errorToast(error.data.message))
+      .catch(error => errorToast(error.data.errorMessages[0].message))
   }
 
   const onSubmitDelete = () => {
@@ -78,7 +78,7 @@ export const DeckPage = () => {
         successToast(`Card was successfully deleted`)
         window.location.reload()
       })
-      .catch(error => errorToast(error.data.message))
+      .catch(error => errorToast(error.data.errorMessages[0].message))
     setCardDeleteId(null)
   }
 
