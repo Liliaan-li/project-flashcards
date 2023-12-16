@@ -24,7 +24,8 @@ type Props = Pick<DialogProps, 'onCancel' | 'onOpenChange' | 'open'> & {
   isPrivate?: boolean
   image?: string | null
 }
-export const AddDeck = ({ onCancel, onSubmit, image, isPrivate, name, ...dialogProps }: Props) => {
+
+export const AddDeck = ({ onCancel, onSubmit, name, isPrivate, image, ...dialogProps }: Props) => {
   const { control, handleSubmit, reset } = useDeckForm({
     name: name || '',
     isPrivate: isPrivate || false,
@@ -44,6 +45,7 @@ export const AddDeck = ({ onCancel, onSubmit, image, isPrivate, name, ...dialogP
     onSubmit(formData)
 
     dialogProps.onOpenChange?.(false)
+
     reset()
   })
 
@@ -57,7 +59,7 @@ export const AddDeck = ({ onCancel, onSubmit, image, isPrivate, name, ...dialogP
   }
 
   return (
-    <Modal {...dialogProps} title="Create new deck">
+    <Modal {...dialogProps} title="Add New Pack" className={s.modal}>
       <form className={s.content} onSubmit={onSubmitHandler}>
         {imageUrl && (
           <div className={s.image}>
@@ -74,7 +76,7 @@ export const AddDeck = ({ onCancel, onSubmit, image, isPrivate, name, ...dialogP
         <ControlledCheckbox
           onChange={() => {}}
           control={control}
-          label="Private"
+          label="Private pack"
           name="isPrivate"
         />
         <div className={s.button}>
