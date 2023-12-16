@@ -1,23 +1,24 @@
 .container {
   display: flex;
   gap: 15px;
-}
+  white-space: nowrap;
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
+  .header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 
-.drop {
-  cursor: pointer;
+    .drop {
+      cursor: pointer;
 
-  .more {
-    margin: 5px;
-  }
+      .more {
+        margin: 5px;
+      }
 
-  &:hover {
-    color: var(--color-dark-100);
-    transition: 0.2s;
+      &:hover {
+        color: var(--color-dark-100);
+        transition: 0.2s;
+      }
+    }
   }
 }
