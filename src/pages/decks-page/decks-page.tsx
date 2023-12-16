@@ -125,29 +125,35 @@ export const DecksPage = () => {
           minCards={minCards}
           search={search}
         />
-
-        <TableForDecksPage
-          decks={decks}
-          currentUserId={currentUserId}
-          onDeleteClick={setDeckToDeleteId}
-          onEditClick={setDeckToEditId}
-        />
-
-        <div className={s.paginationContainer}>
-          <Pagination
-            page={itemsPerPage}
-            pageChange={itemPage => {
-              setPageElementsCount(itemPage)
-            }}
-            currentPage={decks.pagination.currentPage}
-            lastPage={decks.pagination.totalPages}
-            maxLength={7}
-            setCurrentPage={page => {
-              setCurrentPage(page)
-            }}
-            options={[5, 7, 10, 12]}
-          />
-        </div>
+        {decks.items.length > 0 ? (
+          <>
+            <TableForDecksPage
+              decks={decks}
+              currentUserId={currentUserId}
+              onDeleteClick={setDeckToDeleteId}
+              onEditClick={setDeckToEditId}
+            />
+            <div className={s.paginationContainer}>
+              <Pagination
+                page={itemsPerPage}
+                pageChange={itemPage => {
+                  setPageElementsCount(itemPage)
+                }}
+                currentPage={decks.pagination.currentPage}
+                lastPage={decks.pagination.totalPages}
+                maxLength={7}
+                setCurrentPage={page => {
+                  setCurrentPage(page)
+                }}
+                options={[5, 7, 10, 12]}
+              />
+            </div>
+          </>
+        ) : (
+          <span style={{ display: 'flex', justifyContent: 'center' }}>
+            {`Can't find any decks of cards`}
+          </span>
+        )}
       </div>
     </div>
   )
