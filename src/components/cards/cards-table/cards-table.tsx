@@ -85,7 +85,10 @@ export const CardsTable = ({
   const onSubmit = (body: FormData, id: string) => {
     updateCard({ cardId: id ?? '', body, deckId: id })
       .unwrap()
-      .then(() => successToast(`Card info was successfully changed`))
+      .then(() => {
+        successToast(`Card info was successfully changed`)
+        window.location.reload()
+      })
       .catch(error => errorToast(error.data.message))
   }
 
