@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 
 import { Toaster } from 'react-hot-toast'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import s from './deck-header.module.scss'
 
@@ -13,13 +13,14 @@ import { Button } from '@/components/ui/button'
 import { TextField } from '@/components/ui/text-field'
 import { selectCardsSearch } from '@/services/cards/cards.selectors.ts'
 import { cardsSlice } from '@/services/cards/cards.slice.ts'
-import { Deck, useDeleteDeckMutation, useUpdateDeckMutation } from '@/services/decks'
+import { Deck, DecksResponse, useDeleteDeckMutation, useUpdateDeckMutation } from '@/services/decks'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { errorToast, successToast } from '@/utils/toasts/toasts.ts'
 
 type DeckHeaderProps = {
   isOwner: boolean
   deckData: Deck
+  decksData: DecksResponse | undefined
   onSubmitCreate: (data: FormData) => void
   setShowCreateModal: (show: boolean) => void
   showCreateModal: boolean
@@ -33,6 +34,7 @@ const options = [
 
 export const DeckHeader: FC<DeckHeaderProps> = ({
   deckData,
+  decksData,
   isOwner,
   isEmptyCard,
   onSubmitCreate,
@@ -40,6 +42,7 @@ export const DeckHeader: FC<DeckHeaderProps> = ({
   showCreateModal,
 }) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const [deckEditId, setDeckEditId] = useState<null | string>(null)
   const [deckDeleteId, setDeckDeleteId] = useState<null | string>(null)
@@ -51,8 +54,7 @@ export const DeckHeader: FC<DeckHeaderProps> = ({
 
   const setSearch = (search: string) => dispatch(cardsSlice.actions.setSearch(search))
 
-  const deckToDeleteName = deckData.id
-  const deckToEdit = deckData.id === deckEditId
+  const deckToEdit = decksData?.items?.find(deck => deck.id === deckEditId)
   const showEditModal = !!deckEditId
   const showDeleteModal = !!deckDeleteId
 
@@ -61,27 +63,36 @@ export const DeckHeader: FC<DeckHeaderProps> = ({
       .unwrap()
       .then(() => successToast(`Deck was successfully deleted`))
       .catch(error => errorToast(error.data.message))
+
     setDeckDeleteId(null)
+
+    navigate('/')
   }
 
-  const onConfirmEdit = (data: any) => {
-    updateDeck({ id: deckEditId, ...data })
+  const onConfirmEdit = (data: { name: string }) => {
+    updateDeck({ id: deckData.id, ...data })
       .unwrap()
-      .then(() => successToast(`Deck info was successfully changed`))
+      .then(() => {
+        successToast(`Deck info was successfully changed`)
+        window.location.reload()
+      })
       .catch(error => errorToast(error.data.message))
+
     setDeckEditId(null)
   }
 
   return (
     <div>
       <DecksEdit
+        title="Edit Pack"
         defaultValues={deckToEdit}
         onConfirm={onConfirmEdit}
+        key={deckEditId}
         onOpenChange={() => setDeckEditId(null)}
         open={showEditModal}
       />
       <DeleteDeck
-        name={deckToDeleteName ?? ''}
+        name={deckData.id ?? ''}
         onCancel={() => setDeckDeleteId(null)}
         onConfirm={onConfirmDelete}
         onOpenChange={() => setDeckDeleteId(null)}
