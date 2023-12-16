@@ -64,20 +64,26 @@ const TableForDecksPage = ({
             <Table.Cell>{new Date(item.updated).toLocaleString()}</Table.Cell>
             <Table.Cell>{item.author.name}</Table.Cell>
             <Table.Cell>
-              <div className={s.learn}>
-                <div className={s.options}>
+              <div className={s.edit}>
+                <div className={s.editCellSize}>
                   {item.cardsCount > 0 && (
-                    <Button as={Link} to={`/decks/${item.id}/learn`} variant="link">
+                    <Button
+                      as={Link}
+                      to={`/decks/${item.id}/learn`}
+                      variant="link"
+                      style={{ width: '16px', padding: '0' }}
+                    >
                       <Play size={16} />
                     </Button>
                   )}
                 </div>
-                <div className={s.edit}>
+                <div className={s.editCellSize}>
+                  {item.author.id === currentUserId && <Edit onClick={handleEditClick(item.id)} />}
+                </div>
+
+                <div className={s.editCellSize}>
                   {item.author.id === currentUserId && (
-                    <>
-                      <Edit onClick={handleEditClick(item.id)} />
-                      <DeleteOutlined size={16} onClick={handleDeleteClick(item.id)} />
-                    </>
+                    <DeleteOutlined size={16} onClick={handleDeleteClick(item.id)} />
                   )}
                 </div>
               </div>
