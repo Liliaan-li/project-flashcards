@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import { Modal, ModalProps } from '@/components/ui/modal'
 
 const newDeckSchema = z.object({
-  isPrivate: z.boolean(),
   name: z.string().min(3).max(50),
 })
 
@@ -20,11 +19,12 @@ export type DialogProps = ModalProps & {
 }
 
 type Props = Pick<DialogProps, 'onCancel' | 'onOpenChange' | 'open'> & {
-  defaultValues?: any
+  defaultValues?: FormValues
   onConfirm: (data: FormValues) => void
+  title: string
 }
 
-export const DecksEdit = ({ defaultValues, onCancel, onConfirm, ...dialogProps }: Props) => {
+export const DecksEdit = ({ defaultValues, onCancel, onConfirm, title, ...dialogProps }: Props) => {
   const { control, handleSubmit, reset } = useForm<FormValues>({
     defaultValues,
     resolver: zodResolver(newDeckSchema),
@@ -41,15 +41,17 @@ export const DecksEdit = ({ defaultValues, onCancel, onConfirm, ...dialogProps }
   }
 
   return (
-    <Modal {...dialogProps} title="Edit Card">
-      <form className={s.content} onSubmit={onSubmit}>
-        <ControlledTextField control={control} label="Choose a question format" name="name" />
-      </form>
-      <div className={s.button}>
-        <Button variant="secondary" onClick={handleCancel}>
-          Cancel
-        </Button>
-        <Button onClick={onSubmit}>Save Changes</Button>
+    <Modal {...dialogProps} title={title}>
+      <div className={s.container}>
+        <form className={s.content} onSubmit={onSubmit}>
+          <ControlledTextField control={control} label="Choose a question format" name="name" />
+        </form>
+        <div className={s.button}>
+          <Button variant="secondary" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button onClick={onSubmit}>Save Changes</Button>
+        </div>
       </div>
     </Modal>
   )
