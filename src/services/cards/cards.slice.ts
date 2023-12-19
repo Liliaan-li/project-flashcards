@@ -5,7 +5,8 @@ import { Sort } from '@/services/cards/cards.types.ts'
 const initialState = {
   question: '',
   sort: null as Sort,
-  pageSize: 10,
+  currentPage: 1,
+  page: 7,
 }
 
 export const cardsSlice = createSlice({
@@ -17,6 +18,12 @@ export const cardsSlice = createSlice({
     },
     setSort: (state, action: PayloadAction<{ sortParam: Sort }>) => {
       state.sort = action.payload.sortParam
+    },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload
+    },
+    setPageElementsCount: (state, action: PayloadAction<number>) => {
+      state.page = action.payload
     },
   },
 })

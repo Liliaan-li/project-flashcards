@@ -37,6 +37,8 @@ export type CardsParams = {
   question?: string
   answer?: string
   orderBy?: string
+  currentPage?: number
+  itemsPerPage?: number
 }
 
 export type CardValues = {
