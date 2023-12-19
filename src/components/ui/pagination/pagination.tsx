@@ -10,13 +10,10 @@ export type PaginationProps = {
   currentPage: number
   lastPage: number
   maxLength: number
-  count?: number
   setCurrentPage: (page: number) => void
   page: number
   options: number[]
   pageChange: (itemPage: number) => void
-  active?: boolean
-  onChange?: (page: number) => void
   className?: string
 }
 
@@ -33,7 +30,6 @@ export const Pagination = ({
 
   const handleChangePage = (selectedPage: string) => {
     pageChange(+selectedPage)
-    // setCurrentPage(+selectedPage)
   }
   const selectOptions = options.map(value => ({
     label: value.toString(),
@@ -80,14 +76,7 @@ export const Pagination = ({
         <ArrowRight size={16} />
       </button>
       {showPageSelect && (
-        <div
-          className={classNames.selectBox}
-          {...{
-            page: page,
-            options,
-            pageChange,
-          }}
-        >
+        <div className={classNames.selectBox}>
           Show
           <Select
             className={classNames.select}
