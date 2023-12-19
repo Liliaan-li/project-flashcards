@@ -11,12 +11,18 @@ import { CardsTable } from '@/components/cards/cards-table/cards-table.tsx'
 import { DeckAddCard } from '@/components/deck/deck-add-card/deck-add-card.tsx'
 import { DeleteDeck } from '@/components/deck/delete-deck/delete-deck.tsx'
 import { Header } from '@/components/ui/header'
+import { Pagination } from '@/components/ui/pagination/pagination.tsx'
 import { Table } from '@/components/ui/table'
 import { Typography } from '@/components/ui/typography'
 import { useDebounce } from '@/hooks/use-debounce/use-debounce.ts'
 import { DeckHeader } from '@/pages/deck-page/deck-header/deck-header.tsx'
 import { useMeQuery } from '@/services/auth/auth.service.ts'
-import { selectCardsSearch, selectCardsSort } from '@/services/cards/cards.selectors.ts'
+import {
+  selectCardsCurrentPage,
+  selectCardsItemsPerPage,
+  selectCardsSearch,
+  selectCardsSort,
+} from '@/services/cards/cards.selectors.ts'
 import {
   useCreateCardMutation,
   useDeleteCardMutation,
@@ -40,19 +46,27 @@ export const DeckPage = () => {
 
   const search = useDebounce(useAppSelector(selectCardsSearch))
   const sort = useAppSelector(selectCardsSort)
-
+  const currentPage = useAppSelector(selectCardsCurrentPage)
+  const itemsPerPage = useAppSelector(selectCardsItemsPerPage)
   const orderBy = useDebounce(createSort(sort))
 
   const onChangeSort = (sortParam: Sort) => dispatch(cardsSlice.actions.setSort({ sortParam }))
+  const setCurrentPage = (page: number) => dispatch(cardsSlice.actions.setCurrentPage(page))
+  const setPageElementsCount = (page: number) =>
+    dispatch(cardsSlice.actions.setPageElementsCount(page))
 
   const [createCard] = useCreateCardMutation()
-  const { data: deckData } = useGetDeckQuery({ id: id || '' })
+  const { data: deckData, refetch } = useGetDeckQuery({ id: id || '' })
   const { data: decks } = useGetDecksQuery()
   const [deleteCard] = useDeleteCardMutation()
   const { data } = useMeQuery()
-  const { data: cardsData, isLoading } = useGetCardsQuery({
+  const {
+    data: cardsData,
+    isLoading,
+    refetch: refetchCards,
+  } = useGetCardsQuery({
     id,
-    params: { question: search, orderBy },
+    params: { question: search, orderBy, currentPage: currentPage, itemsPerPage: itemsPerPage },
   })
 
   const isOwner = data?.id === deckData?.userId
@@ -60,13 +74,14 @@ export const DeckPage = () => {
 
   const showDeleteModal = !!cardDeleteId
   const cardDelete = cardsData?.items?.find(card => card.id === cardDeleteId)?.deckId
+  const isSearchResultsEmpty = cardsData?.items.length === 0
 
   const onSubmitCreate = (body: FormData) => {
     createCard({ id, body })
       .unwrap()
       .then(() => {
         successToast(`Card was successfully created`)
-        window.location.reload()
+        refetch()
       })
       .catch(error => errorToast(error.data.errorMessages[0].message))
   }
@@ -76,7 +91,7 @@ export const DeckPage = () => {
       .unwrap()
       .then(() => {
         successToast(`Card was successfully deleted`)
-        window.location.reload()
+        refetch()
       })
       .catch(error => errorToast(error.data.errorMessages[0].message))
     setCardDeleteId(null)
@@ -117,17 +132,25 @@ export const DeckPage = () => {
             </Typography.Body1>
           </Link>
         </div>
-        {isEmptyCard && (
+        {deckData && (
+          <DeckHeader
+            setShowCreateModal={setShowCreateModal}
+            showCreateModal={showCreateModal}
+            deckData={deckData || []}
+            isOwner={isOwner}
+            isEmptyCard={isEmptyCard!}
+            onSubmitCreate={onSubmitCreate}
+            decksData={decks}
+            refetch={refetch}
+          />
+        )}
+        {isSearchResultsEmpty && isEmptyCard && (
+          <div className={s.typography}>
+            <Typography.Body1>Card Not Detected</Typography.Body1>
+          </div>
+        )}
+        {isEmptyCard && !isSearchResultsEmpty && (
           <>
-            <DeckHeader
-              setShowCreateModal={setShowCreateModal}
-              showCreateModal={showCreateModal}
-              deckData={deckData || []}
-              isOwner={isOwner}
-              isEmptyCard={isEmptyCard!}
-              onSubmitCreate={onSubmitCreate}
-              decksData={decks}
-            />
             <CardsTable
               cards={cardsData?.items}
               isOwner={isOwner}
@@ -137,8 +160,26 @@ export const DeckPage = () => {
               openEditModal={() => setShowEditModal(true)}
               setShowEditModal={setShowEditModal}
               showEditModal={showEditModal}
+              refetch={refetchCards}
             />
           </>
+        )}
+        {cardsData && isEmptyCard && !isSearchResultsEmpty && (
+          <div className={s.pagination}>
+            <Pagination
+              currentPage={cardsData.pagination.currentPage}
+              lastPage={cardsData.pagination.totalPages}
+              maxLength={7}
+              setCurrentPage={page => {
+                setCurrentPage(page)
+              }}
+              page={itemsPerPage}
+              options={[5, 7, 10, 12]}
+              pageChange={itemPage => {
+                setPageElementsCount(itemPage)
+              }}
+            />
+          </div>
         )}
         <DeckAddCard
           onSubmitCreate={onSubmitCreate}

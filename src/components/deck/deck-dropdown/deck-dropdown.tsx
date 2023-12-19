@@ -33,7 +33,7 @@ export const DeckDropdown: FC<DeckDropdownProps> = ({
   return (
     <div className={s.container}>
       <Typography.LARGE>{data.name}</Typography.LARGE>
-      {isOwner && !!data.cardsCount && (
+      {isOwner && (
         <div className={s.header}>
           <div className={s.drop}>
             <Dropdown
