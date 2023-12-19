@@ -25,6 +25,7 @@ type DeckHeaderProps = {
   setShowCreateModal: (show: boolean) => void
   showCreateModal: boolean
   isEmptyCard: boolean
+  refetch: () => void
 }
 
 const options = [
@@ -40,6 +41,7 @@ export const DeckHeader: FC<DeckHeaderProps> = ({
   onSubmitCreate,
   setShowCreateModal,
   showCreateModal,
+  refetch,
 }) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -74,7 +76,7 @@ export const DeckHeader: FC<DeckHeaderProps> = ({
       .unwrap()
       .then(() => {
         successToast(`Deck info was successfully changed`)
-        window.location.reload()
+        refetch()
       })
       .catch(error => errorToast(error.data.message))
 

@@ -24,6 +24,7 @@ type Props = {
   openEditModal: () => void
   showEditModal: boolean
   setShowEditModal: (show: boolean) => void
+  refetch: () => void
 }
 
 export const cardsColumn: Column[] = [
@@ -77,19 +78,20 @@ export const CardsTable = ({
   openEditModal,
   setShowEditModal,
   showEditModal,
+  refetch,
 }: Props) => {
   const [showButton, setShowButton] = useState(true)
 
   const [updateCard] = useUpdateCardMutation()
 
-  const onSubmit = (body: FormData, id: string) => {
-    updateCard({ cardId: id ?? '', body, deckId: id })
+  const onSubmit = (body: FormData, id: string, deckId: string) => {
+    updateCard({ cardId: id ?? '', deckId, body })
       .unwrap()
       .then(() => {
         successToast(`Card info was successfully changed`)
-        window.location.reload()
+        refetch()
       })
-      .catch(() => errorToast(error.data.errorMessages[0].message))
+      .catch(error => errorToast(error.data.errorMessages[0].message))
   }
 
   return (
@@ -134,7 +136,7 @@ export const CardsTable = ({
                     <Edit onClick={openEditModal} />
                     <CardForm
                       options={options}
-                      onSubmit={body => onSubmit(body, card.id)}
+                      onSubmit={body => onSubmit(body, card.id, card.deckId)}
                       onCancel={() => setShowEditModal(false)}
                       onOpenChange={setShowEditModal}
                       open={showEditModal}
