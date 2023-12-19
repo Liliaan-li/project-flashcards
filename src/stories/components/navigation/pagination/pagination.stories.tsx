@@ -12,7 +12,6 @@ export default {
 export const Default = () => {
   const [page, setPage] = useState(1)
   const [perPage, setPerPage] = useState(8)
-  const TOTAL_PAGES_COUNT = 10
   const lastPage = 20
 
   return (
@@ -22,8 +21,6 @@ export const Default = () => {
         setCurrentPage={setPage}
         maxLength={7}
         lastPage={lastPage}
-        onChange={setPage}
-        count={TOTAL_PAGES_COUNT}
         page={perPage}
         options={[1, 5, 8, 12, 20]}
         pageChange={setPerPage}
