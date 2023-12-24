@@ -63,7 +63,7 @@ export const DeckHeader: FC<DeckHeaderProps> = ({
   const onConfirmDelete = () => {
     deleteDeck({ id: deckDeleteId ?? '' })
       .unwrap()
-      .then(() => successToast(`Deck was successfully deleted`))
+      .then(() => successToast(`Pack was successfully deleted`))
       .catch(error => errorToast(error.data.message))
 
     setDeckDeleteId(null)
