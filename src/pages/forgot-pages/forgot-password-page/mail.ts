@@ -247,7 +247,7 @@ export const file =
   '                                                        <w:anchorlock/>\n' +
   '                                                        <v:textbox inset="0px,0px,0px,0px">\n' +
   '                                                            <center style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px">\n' +
-  '                                                    <![endif]--><a href="http://localhost:5173/create-new-password/##token##"\n' +
+  '                                                    <![endif]--><a href="https://project-flashcards-five.vercel.app/create-new-password/##token##"\n' +
   '                                                                   style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#03191e;border-radius:4px;width:auto;border-top:1px solid #03191E;font-weight:undefined;border-right:1px solid #03191E;border-bottom:1px solid #03191E;border-left:1px solid #03191E;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;"\n' +
   '                                                                   target="_blank"><span\n' +
   '                                                            style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span\n' +
